@@ -65,7 +65,7 @@ SELECT COUNT(*) FROM rutaAprendizaje;
 
 ### 4. Ejecución de Consultas y Procedimientos
 
-1. Los procedimientos almacenados, funciones, triggers y eventos se encuentran en el archivo `procedures.sql`.
+1. Los procedimientos almacenados, funciones, triggers y eventos se encuentran en sus respectivos archivos.
 2. Ejecute este script para crear todos los objetos programables de la base de datos.
 3. Para ejecutar un procedimiento almacenado específico, utilice:
 
