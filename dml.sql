@@ -1,18 +1,15 @@
--- Execute each table's inserts as a separate transaction
--- This helps isolate errors and ensures proper execution
-
--- 1. sede (base tables with no dependencies)
+-- 1. sede 
 INSERT INTO sede (nombre, direccion, ciudad, capacidad_total, nit, telefono_principal, email_contacto) VALUES
-('Sede Principal', 'Av. Tecnología 456', 'Bucaramanga', 500, '900123456-7', '6017654321', 'principal@campuslands.com'),
-('Sede Norte', 'Calle Innovación 789', 'Bogotá', 350, '900123456-8', '6017654322', 'norte@campuslands.com'),
-('Campus Central', 'Carrera 27 #30-15', 'Medellín', 400, '900123456-9', '6017654323', 'central@campuslands.com'),
-('Centro de Formación', 'Avenida 5 #10-45', 'Cali', 300, '900123457-0', '6017654324', 'cali@campuslands.com'),
-('Tech Hub', 'Calle 72 #10-34', 'Barranquilla', 250, '900123457-1', '6017654325', 'barranquilla@campuslands.com'),
-('Edificio Innovación', 'Carrera 43 #65-28', 'Pereira', 200, '900123457-2', '6017654326', 'pereira@campuslands.com'),
-('Centro Digital', 'Avenida Bolívar #45-12', 'Manizales', 180, '900123457-3', '6017654327', 'manizales@campuslands.com'),
-('Campus Oriente', 'Calle 15 #23-56', 'Cúcuta', 220, '900123457-4', '6017654328', 'cucuta@campuslands.com'),
-('Sede Caribe', 'Avenida del Mar #10-20', 'Cartagena', 280, '900123457-5', '6017654329', 'cartagena@campuslands.com'),
-('Centro Tecnológico', 'Carrera 5 #12-34', 'Ibagué', 190, '900123457-6', '6017654330', 'ibague@campuslands.com');
+('Campuslands - Sede Principal', 'Av. Principal 123', 'Bucaramanga', 500, '901234567-0', '6071234567', 'bucaramanga@campuslands.com'),
+('Campuslands - Sede Medellín', 'Calle 10 #50-20', 'Medellín', 400, '901234567-1', '6041234567', 'medellin@campuslands.com'),
+('Campuslands - Sede Bogotá', 'Carrera 15 #100-45', 'Bogotá', 450, '901234567-2', '6011234567', 'bogota@campuslands.com'),
+('Campuslands - Sede Cali', 'Avenida 6 #30-15', 'Cali', 350, '901234567-3', '6021234567', 'cali@campuslands.com'),
+('Campuslands - Sede Barranquilla', 'Calle 75 #20-10', 'Barranquilla', 300, '901234567-4', '6051234567', 'barranquilla@campuslands.com'),
+('Campuslands - Sede Pereira', 'Carrera 40 #18-30', 'Pereira', 250, '901234567-5', '6061234567', 'pereira@campuslands.com'),
+('Campuslands - Sede Manizales', 'Avenida Santander #22-50', 'Manizales', 200, '901234567-6', '6067654321', 'manizales@campuslands.com'),
+('Campuslands - Sede Cúcuta', 'Calle 12 #25-40', 'Cúcuta', 220, '901234567-7', '6077654321', 'cucuta@campuslands.com'),
+('Campuslands - Sede Cartagena', 'Avenida Playa #5-10', 'Cartagena', 280, '901234567-8', '6057654321', 'cartagena@campuslands.com'),
+('Campuslands - Sede Ibagué', 'Carrera 7 #15-30', 'Ibagué', 190, '901234567-9', '6087654321', 'ibague@campuslands.com');
 
 -- 2. estadoActual
 INSERT INTO estadoActual (nombre, descripcion) VALUES
@@ -42,16 +39,18 @@ INSERT INTO nivelRiesgo (nivel, descripcion) VALUES
 
 -- 4. rutaAprendizaje
 INSERT INTO rutaAprendizaje (nombre, descripcion, duracion_meses, fecha_creacion) VALUES
-('Desarrollo Web Full Stack', 'Formación completa en desarrollo web frontend y backend', 9, '2023-01-15'),
-('Desarrollo de Aplicaciones Móviles', 'Especialización en desarrollo de apps para iOS y Android', 7, '2023-02-20'),
-('Ciencia de Datos', 'Formación en análisis y procesamiento de datos', 10, '2023-03-10'),
-('DevOps y Cloud Computing', 'Especialización en infraestructura y despliegue', 8, '2023-04-05'),
-('Desarrollo de Videojuegos', 'Formación en diseño y programación de videojuegos', 11, '2023-05-12'),
-('Inteligencia Artificial', 'Especialización en machine learning y deep learning', 12, '2023-06-18'),
-('Ciberseguridad', 'Formación en seguridad informática y protección de datos', 9, '2023-07-22'),
-('Blockchain y Criptomonedas', 'Especialización en tecnologías blockchain', 8, '2023-08-30'),
-('UX/UI Design', 'Formación en diseño de experiencia e interfaz de usuario', 6, '2023-09-15'),
-('IoT y Sistemas Embebidos', 'Especialización en Internet de las Cosas', 10, '2023-10-20');
+('Fundamentos de Programación', 'Introducción a la algoritmia, PSeInt y Python', 4, '2025-01-10'),
+('Programación Web', 'HTML, CSS y Bootstrap para el desarrollo web responsivo', 5, '2025-02-15'),
+('Programación Formal', 'Desarrollo de aplicaciones con Java, JavaScript y C#', 6, '2025-03-05'),
+('Bases de Datos', 'MySQL, MongoDB y PostgreSQL; cada ruta tiene un SGBD principal y un alternativo', 7, '2025-04-12'),
+('Backend Avanzado', 'Desarrollo con .NET Core, Spring Boot, Node.js y Express', 8, '2025-05-20'),
+('Arquitectura de Software', 'Patrones de diseño, microservicios y buenas prácticas', 9, '2025-06-25'),
+('Ciberseguridad', 'Seguridad informática, encriptación y análisis de vulnerabilidades', 7, '2025-07-18'),
+('Desarrollo de APIs', 'Creación y consumo de APIs REST y GraphQL', 6, '2025-08-22'),
+('Desarrollo de Aplicaciones Empresariales', 'Aplicaciones escalables para empresas con frameworks avanzados', 10, '2025-09-30'),
+('DevOps y Cloud Computing', 'Automatización, integración continua y despliegue en la nube', 9, '2025-10-10'),
+('Inteligencia Artificial', 'Machine learning, deep learning y modelos de IA', 12, '2025-11-05'),
+('Análisis de Datos', 'Manejo de grandes volúmenes de datos con Python y SQL', 8, '2025-12-15');
 
 -- 5. sgbd
 INSERT INTO sgbd (nombre, version, descripcion) VALUES
@@ -69,41 +68,34 @@ INSERT INTO sgbd (nombre, version, descripcion) VALUES
 -- 6. moduloAprendizaje
 INSERT INTO moduloAprendizaje (nombre, descripcion, duracion_semanas, tipo) VALUES
 ('Introducción a la Algoritmia', 'Fundamentos de lógica y algoritmos', 3, 'Fundamentos'),
-('PSeInt', 'Pseudocódigo e introducción a la programación', 2, 'Fundamentos'),
+('Introducción a Bases de Datos', 'Conceptos básicos de bases de datos relacionales y no relacionales', 3, 'Bases de datos'),
 ('Python Básico', 'Fundamentos de programación con Python', 4, 'Fundamentos'),
 ('HTML y CSS', 'Fundamentos de desarrollo web', 3, 'Web'),
 ('Bootstrap', 'Framework CSS para diseño responsive', 2, 'Web'),
 ('JavaScript', 'Lenguaje de programación para web', 5, 'Programación'),
 ('Java', 'Programación orientada a objetos con Java', 6, 'Programación'),
-('C#', 'Desarrollo de aplicaciones con C#', 5, 'Programación'),
-('MySQL Fundamentals', 'Gestión de bases de datos relacionales', 3, 'Bases de datos'),
-('MongoDB Basics', 'Introducción a bases de datos NoSQL', 3, 'Bases de datos');
+('PostgreSQL Básico', 'Introducción a bases de datos relacionales con PostgreSQL', 3, 'Bases de datos'),
+('Node.js', 'Entorno de ejecución para JavaScript', 4, 'Backend');
 
 -- 7. tipoEvaluacion
 INSERT INTO tipoEvaluacion (nombre, porcentaje, descripcion) VALUES
-('Teórica', 30.00, 'Evaluación de conocimientos teóricos'),
-('Práctica', 60.00, 'Evaluación de habilidades prácticas'),
-('Trabajos/Quizzes', 10.00, 'Evaluaciones cortas y trabajos asignados'),
-('Proyecto Final', 40.00, 'Proyecto integrador de conocimientos'),
-('Examen Parcial', 25.00, 'Evaluación intermedia del módulo'),
-('Examen Final', 35.00, 'Evaluación final del módulo'),
-('Participación', 5.00, 'Participación activa en clases'),
-('Trabajo en Equipo', 15.00, 'Evaluación de habilidades colaborativas'),
-('Autoevaluación', 5.00, 'Evaluación personal del aprendizaje'),
-('Coevaluación', 5.00, 'Evaluación entre compañeros');
+('Quizes', 10.00, 'Evaluaciones cortas para medir conocimientos adquiridos en cada módulo'),
+('Trabajos', 5.00, 'Asignaciones y actividades prácticas individuales o grupales'),
+('Proyecto', 50.00, 'Proyecto final integrador que evalúa el aprendizaje del módulo'),
+('Examen', 40.00, 'Evaluación escrita que mide el conocimiento teórico y práctico adquirido');
 
 -- 8. horarios
 INSERT INTO horarios (hora_inicio, hora_fin, descripcion) VALUES
+('07:00:00', '11:00:00', 'Jornada mañana'),
 ('08:00:00', '12:00:00', 'Jornada mañana'),
+('09:00:00', '13:00:00', 'Jornada mañana'),
+('07:30:00', '11:30:00', 'Jornada mañana'),
+('08:30:00', '12:30:00', 'Jornada mañana'),
+('12:00:00', '16:00:00', 'Jornada tarde'),
 ('13:00:00', '17:00:00', 'Jornada tarde'),
-('18:00:00', '22:00:00', 'Jornada noche'),
-('07:30:00', '11:30:00', 'Jornada mañana temprana'),
-('12:30:00', '16:30:00', 'Jornada tarde temprana'),
-('17:30:00', '21:30:00', 'Jornada noche temprana'),
-('09:00:00', '13:00:00', 'Jornada mañana extendida'),
-('14:00:00', '18:00:00', 'Jornada tarde extendida'),
-('19:00:00', '23:00:00', 'Jornada noche extendida'),
-('08:30:00', '12:30:00', 'Jornada mañana alternativa');
+('14:00:00', '18:00:00', 'Jornada tarde'),
+('17:00:00', '21:00:00', 'Jornada noche'),
+('18:00:00', '22:00:00', 'Jornada noche');
 
 -- 9. skills
 INSERT INTO skills (nombre, descripcion) VALUES
