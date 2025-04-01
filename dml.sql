@@ -1,358 +1,410 @@
--- 1. sede 
-INSERT INTO sede (nombre, direccion, ciudad, capacidad_total, nit, telefono_principal, email_contacto) VALUES
-('Campuslands - Sede Principal', 'Av. Principal 123', 'Bucaramanga', 500, '901234567-0', '6071234567', 'bucaramanga@campuslands.com'),
-('Campuslands - Sede Medellín', 'Calle 10 #50-20', 'Medellín', 400, '901234567-1', '6041234567', 'medellin@campuslands.com'),
-('Campuslands - Sede Bogotá', 'Carrera 15 #100-45', 'Bogotá', 450, '901234567-2', '6011234567', 'bogota@campuslands.com'),
-('Campuslands - Sede Cali', 'Avenida 6 #30-15', 'Cali', 350, '901234567-3', '6021234567', 'cali@campuslands.com'),
-('Campuslands - Sede Barranquilla', 'Calle 75 #20-10', 'Barranquilla', 300, '901234567-4', '6051234567', 'barranquilla@campuslands.com'),
-('Campuslands - Sede Pereira', 'Carrera 40 #18-30', 'Pereira', 250, '901234567-5', '6061234567', 'pereira@campuslands.com'),
-('Campuslands - Sede Manizales', 'Avenida Santander #22-50', 'Manizales', 200, '901234567-6', '6067654321', 'manizales@campuslands.com'),
-('Campuslands - Sede Cúcuta', 'Calle 12 #25-40', 'Cúcuta', 220, '901234567-7', '6077654321', 'cucuta@campuslands.com'),
-('Campuslands - Sede Cartagena', 'Avenida Playa #5-10', 'Cartagena', 280, '901234567-8', '6057654321', 'cartagena@campuslands.com'),
-('Campuslands - Sede Ibagué', 'Carrera 7 #15-30', 'Ibagué', 190, '901234567-9', '6087654321', 'ibague@campuslands.com');
-
--- 2. estadoActual
-INSERT INTO estadoActual (nombre, descripcion) VALUES
-('En proceso de ingreso', 'Camper en proceso de admisión'),
-('Inscrito', 'Camper inscrito pero aún no inicia'),
-('Aprobado', 'Camper aprobado para iniciar el programa'),
-('Cursando', 'Camper actualmente en formación'),
-('Graduado', 'Camper que completó exitosamente el programa'),
-('Expulsado', 'Camper expulsado por incumplimiento'),
-('Retirado', 'Camper que decidió retirarse voluntariamente'),
-('En práctica', 'Camper realizando prácticas profesionales'),
+INSERT INTO estadoActual (nombre, descripcion) VALUES 
+('Inscrito', 'Camper que ha completado el proceso de inscripción'),
+('En proceso', 'Camper que está cursando actualmente'),
+('Egresado', 'Camper que ha completado satisfactoriamente su formación'),
+('Retirado', 'Camper que abandonó el programa'),
 ('En espera', 'Camper en lista de espera para iniciar'),
-('Suspendido', 'Camper temporalmente suspendido');
+('Suspendido', 'Camper temporalmente suspendido'),
+('Aplazado', 'Camper que ha aplazado su formación'),
+('Expulsado', 'Camper expulsado por incumplimiento de normas'),
+('Pre-inscrito', 'Camper que ha iniciado el proceso de inscripción'),
+('Graduado', 'Camper que ha recibido su certificación oficial');
 
--- 3. nivelRiesgo
-INSERT INTO nivelRiesgo (nivel, descripcion) VALUES
-('A', 'Riesgo bajo - Buen rendimiento'),
-('B', 'Riesgo medio - Requiere atención'),
-('C', 'Riesgo alto - Intervención urgente'),
-('A+', 'Rendimiento excepcional - Sin riesgo'),
-('A-', 'Rendimiento bueno con pequeñas alertas'),
-('B+', 'Riesgo medio-bajo - Seguimiento regular'),
-('B-', 'Riesgo medio-alto - Seguimiento frecuente'),
-('C+', 'Riesgo alto con potencial de mejora'),
-('C-', 'Riesgo crítico - Intervención inmediata'),
-('D', 'Riesgo extremo - Evaluación para continuidad');
+INSERT INTO nivelRiesgo (nivel, descripcion) VALUES 
+('A', 'Riesgo bajo - Excelente rendimiento'),
+('B', 'Riesgo moderado bajo - Buen rendimiento'),
+('C', 'Riesgo moderado - Rendimiento aceptable'),
+('D', 'Riesgo moderado alto - Rendimiento por debajo del promedio'),
+('E', 'Riesgo alto - Rendimiento deficiente'),
+('F', 'Riesgo muy alto - En peligro de expulsión'),
+('G', 'Seguimiento especial - Casos particulares'),
+('H', 'Riesgo académico - Problemas con evaluaciones'),
+('I', 'Riesgo asistencia - Problemas de asistencia'),
+('J', 'Riesgo actitudinal - Problemas de comportamiento');
 
--- 4. rutaAprendizaje
-INSERT INTO rutaAprendizaje (nombre, descripcion, duracion_meses, fecha_creacion) VALUES
-('Fundamentos de Programación', 'Introducción a la algoritmia, PSeInt y Python', 4, '2025-01-10'),
-('Programación Web', 'HTML, CSS y Bootstrap para el desarrollo web responsivo', 5, '2025-02-15'),
-('Programación Formal', 'Desarrollo de aplicaciones con Java, JavaScript y C#', 6, '2025-03-05'),
-('Bases de Datos', 'MySQL, MongoDB y PostgreSQL; cada ruta tiene un SGBD principal y un alternativo', 7, '2025-04-12'),
-('Backend Avanzado', 'Desarrollo con .NET Core, Spring Boot, Node.js y Express', 8, '2025-05-20'),
-('Arquitectura de Software', 'Patrones de diseño, microservicios y buenas prácticas', 9, '2025-06-25'),
-('Ciberseguridad', 'Seguridad informática, encriptación y análisis de vulnerabilidades', 7, '2025-07-18'),
-('Desarrollo de APIs', 'Creación y consumo de APIs REST y GraphQL', 6, '2025-08-22'),
-('Desarrollo de Aplicaciones Empresariales', 'Aplicaciones escalables para empresas con frameworks avanzados', 10, '2025-09-30'),
-('DevOps y Cloud Computing', 'Automatización, integración continua y despliegue en la nube', 9, '2025-10-10'),
-('Inteligencia Artificial', 'Machine learning, deep learning y modelos de IA', 12, '2025-11-05'),
-('Análisis de Datos', 'Manejo de grandes volúmenes de datos con Python y SQL', 8, '2025-12-15');
+INSERT INTO rutaAprendizaje (nombre, descripcion, duracion_meses, fecha_creacion) VALUES 
+('Desarrollo Web Full Stack', 'Formación completa en desarrollo web frontend y backend', 12, '2023-01-15'),
+('Desarrollo Backend Java', 'Especialización en desarrollo backend con Java y Spring', 9, '2023-02-20'),
+('Desarrollo Frontend React', 'Especialización en desarrollo frontend con React', 6, '2023-03-10'),
+('Ciencia de Datos', 'Formación en análisis y ciencia de datos', 10, '2023-04-05'),
+('DevOps', 'Formación en metodologías y herramientas DevOps', 8, '2023-05-12'),
+('Desarrollo Móvil', 'Formación en desarrollo de aplicaciones móviles', 9, '2023-06-18'),
+('Inteligencia Artificial', 'Formación en IA y machine learning', 12, '2023-07-22'),
+('Ciberseguridad', 'Formación en seguridad informática', 10, '2023-08-30'),
+('Blockchain', 'Formación en tecnologías blockchain', 8, '2023-09-15'),
+('UX/UI Design', 'Formación en diseño de experiencia e interfaz de usuario', 7, '2023-10-20');
 
--- 5. sgbd
-INSERT INTO sgbd (nombre, version, descripcion) VALUES
-('MySQL', '8.0', 'Sistema de gestión de bases de datos relacional'),
-('MongoDB', '6.0', 'Base de datos NoSQL orientada a documentos'),
-('PostgreSQL', '15.0', 'Sistema de gestión de bases de datos relacional avanzado'),
-('SQLite', '3.40', 'Sistema de gestión de bases de datos SQL ligero'),
-('Oracle Database', '19c', 'Sistema de gestión de bases de datos empresarial'),
-('Microsoft SQL Server', '2022', 'Sistema de gestión de bases de datos de Microsoft'),
-('Redis', '7.0', 'Almacén de estructura de datos en memoria'),
-('Cassandra', '4.1', 'Base de datos NoSQL distribuida'),
-('MariaDB', '10.11', 'Fork de MySQL con licencia GPL'),
-('Firebase Firestore', '9.17', 'Base de datos NoSQL en la nube');
 
--- 6. moduloAprendizaje
-INSERT INTO moduloAprendizaje (nombre, descripcion, duracion_semanas, tipo) VALUES
-('Introducción a la Algoritmia', 'Fundamentos de lógica y algoritmos', 3, 'Fundamentos'),
-('Introducción a Bases de Datos', 'Conceptos básicos de bases de datos relacionales y no relacionales', 3, 'Bases de datos'),
-('Python Básico', 'Fundamentos de programación con Python', 4, 'Fundamentos'),
-('HTML y CSS', 'Fundamentos de desarrollo web', 3, 'Web'),
-('Bootstrap', 'Framework CSS para diseño responsive', 2, 'Web'),
-('JavaScript', 'Lenguaje de programación para web', 5, 'Programación'),
-('Java', 'Programación orientada a objetos con Java', 6, 'Programación'),
-('PostgreSQL Básico', 'Introducción a bases de datos relacionales con PostgreSQL', 3, 'Bases de datos'),
-('Node.js', 'Entorno de ejecución para JavaScript', 4, 'Backend');
+INSERT INTO sgbd (nombre, version, descripcion) VALUES 
+('MySQL', '8.0', 'Sistema de gestión de bases de datos relacional de código abierto'),
+('PostgreSQL', '14.0', 'Sistema de gestión de bases de datos relacional orientado a objetos'),
+('MongoDB', '5.0', 'Sistema de gestión de bases de datos NoSQL orientado a documentos'),
+('SQLite', '3.36', 'Sistema de gestión de bases de datos SQL ligero'),
+('Oracle', '19c', 'Sistema de gestión de bases de datos relacional comercial'),
+('SQL Server', '2019', 'Sistema de gestión de bases de datos relacional de Microsoft'),
+('MariaDB', '10.6', 'Fork de MySQL de código abierto'),
+('Redis', '6.2', 'Almacén de estructura de datos en memoria'),
+('Cassandra', '4.0', 'Base de datos NoSQL distribuida'),
+('Firebase', '9.0', 'Plataforma de desarrollo de aplicaciones móviles y web');
 
--- 7. tipoEvaluacion
-INSERT INTO tipoEvaluacion (nombre, porcentaje, descripcion) VALUES
-('Quizes', 10.00, 'Evaluaciones cortas para medir conocimientos adquiridos en cada módulo'),
-('Trabajos', 5.00, 'Asignaciones y actividades prácticas individuales o grupales'),
-('Proyecto', 50.00, 'Proyecto final integrador que evalúa el aprendizaje del módulo'),
-('Examen', 40.00, 'Evaluación escrita que mide el conocimiento teórico y práctico adquirido');
 
--- 8. horarios
-INSERT INTO horarios (hora_inicio, hora_fin, descripcion) VALUES
-('07:00:00', '11:00:00', 'Jornada mañana'),
-('08:00:00', '12:00:00', 'Jornada mañana'),
-('09:00:00', '13:00:00', 'Jornada mañana'),
-('07:30:00', '11:30:00', 'Jornada mañana'),
-('08:30:00', '12:30:00', 'Jornada mañana'),
-('12:00:00', '16:00:00', 'Jornada tarde'),
-('13:00:00', '17:00:00', 'Jornada tarde'),
-('14:00:00', '18:00:00', 'Jornada tarde'),
-('17:00:00', '21:00:00', 'Jornada noche'),
-('18:00:00', '22:00:00', 'Jornada noche');
+INSERT INTO moduloAprendizaje (nombre, descripcion, duracion_semanas, tipo) VALUES 
+('Fundamentos de Programación', 'Conceptos básicos de programación y lógica', 4, 'Fundamentos'),
+('HTML y CSS', 'Fundamentos de desarrollo web con HTML y CSS', 3, 'Web'),
+('JavaScript Básico', 'Introducción a JavaScript y programación web', 4, 'Programación'),
+('Bases de Datos Relacionales', 'Fundamentos de bases de datos SQL', 3, 'Bases de datos'),
+('Node.js', 'Desarrollo backend con Node.js', 5, 'Backend'),
+('React Fundamentals', 'Desarrollo frontend con React', 4, 'Web'),
+('Python Básico', 'Introducción a la programación con Python', 3, 'Programación'),
+('API REST', 'Diseño e implementación de APIs REST', 3, 'Backend'),
+('MongoDB', 'Bases de datos NoSQL con MongoDB', 2, 'Bases de datos'),
+('Git y Control de Versiones', 'Gestión de código fuente con Git', 2, 'Fundamentos');
 
--- 9. skills
-INSERT INTO skills (nombre, descripcion) VALUES
-('JavaScript', 'Programación frontend y backend con JavaScript'),
-('Java', 'Desarrollo de aplicaciones empresariales'),
-('Python', 'Programación general y análisis de datos'),
-('HTML/CSS', 'Maquetación y estilizado web'),
-('SQL', 'Gestión de bases de datos relacionales'),
-('NoSQL', 'Gestión de bases de datos no relacionales'),
-('React', 'Desarrollo de interfaces de usuario'),
-('Angular', 'Framework para aplicaciones web'),
+INSERT INTO tipoEvaluacion (nombre, porcentaje, descripcion) VALUES 
+('Quiz', 10.00, 'Evaluación rápida de conocimientos'),
+('Examen Teórico', 20.00, 'Evaluación completa de conocimientos teóricos'),
+('Proyecto Práctico', 30.00, 'Desarrollo de proyecto aplicando conocimientos'),
+('Exposición', 15.00, 'Presentación oral de un tema específico'),
+('Trabajo en Equipo', 15.00, 'Evaluación de habilidades de trabajo colaborativo'),
+('Autoevaluación', 5.00, 'Evaluación personal del aprendizaje'),
+('Coevaluación', 5.00, 'Evaluación entre pares'),
+('Examen Final', 25.00, 'Evaluación final del módulo'),
+('Participación', 10.00, 'Evaluación de la participación activa'),
+('Reto Técnico', 35.00, 'Desafío técnico para evaluar habilidades específicas');
+
+INSERT INTO horarios (hora_inicio, hora_fin, descripcion) VALUES 
+('07:00:00', '12:00:00', 'Jornada mañana'),
+('13:00:00', '18:00:00', 'Jornada tarde'),
+('18:00:00', '22:00:00', 'Jornada noche'),
+('08:00:00', '13:00:00', 'Jornada mañana extendida'),
+('14:00:00', '19:00:00', 'Jornada tarde extendida'),
+('07:30:00', '12:30:00', 'Jornada mañana alternativa'),
+('13:30:00', '18:30:00', 'Jornada tarde alternativa'),
+('09:00:00', '12:00:00', 'Media jornada mañana'),
+('14:00:00', '17:00:00', 'Media jornada tarde'),
+('08:00:00', '17:00:00', 'Jornada completa');
+
+INSERT INTO skills (nombre, descripcion) VALUES 
+('JavaScript', 'Lenguaje de programación para desarrollo web'),
+('HTML', 'Lenguaje de marcado para páginas web'),
+('CSS', 'Lenguaje de estilos para páginas web'),
+('Python', 'Lenguaje de programación multipropósito'),
+('Java', 'Lenguaje de programación orientado a objetos'),
+('SQL', 'Lenguaje para gestión de bases de datos relacionales'),
+('React', 'Biblioteca JavaScript para interfaces de usuario'),
 ('Node.js', 'Entorno de ejecución para JavaScript'),
-('Spring', 'Framework Java para desarrollo backend');
+('Git', 'Sistema de control de versiones'),
+('MongoDB', 'Base de datos NoSQL orientada a documentos');
 
--- 10. notificacion
-INSERT INTO notificacion (titulo, mensaje, fecha_creacion, tipo, estado) VALUES
-('Bienvenida al programa', 'Te damos la bienvenida al programa intensivo de programación de CampusLands.', '2023-01-15 08:00:00', 'Informativa', 'Enviada'),
-('Cambio de horario', 'Se ha modificado el horario de clases para el módulo de JavaScript.', '2023-02-01 10:30:00', 'Informativa', 'Enviada'),
-('Evaluación próxima', 'Recordatorio: La evaluación práctica de Python será el próximo viernes.', '2023-02-15 09:15:00', 'Alerta', 'Enviada'),
-('Taller adicional', 'Se realizará un taller adicional de bases de datos el sábado.', '2023-03-01 14:00:00', 'Informativa', 'Enviada'),
-('Problema técnico', 'Estamos experimentando problemas con el servidor de prácticas.', '2023-03-10 11:45:00', 'Urgente', 'Enviada'),
-('Actualización de plataforma', 'La plataforma de aprendizaje ha sido actualizada con nuevas funcionalidades.', '2023-03-20 16:30:00', 'Informativa', 'Enviada'),
-('Cambio de trainer', 'Se ha asignado un nuevo trainer para el módulo de React.', '2023-04-01 09:00:00', 'Alerta', 'Enviada'),
-('Evento especial', 'Invitación al hackathon anual de CampusLands.', '2023-04-15 13:20:00', 'Informativa', 'Enviada'),
-('Mantenimiento programado', 'La plataforma estará en mantenimiento el domingo de 00:00 a 06:00.', '2023-05-01 17:45:00', 'Alerta', 'Enviada'),
-('Alerta de rendimiento', 'Tu rendimiento en el módulo actual está por debajo del mínimo requerido.', '2023-05-15 10:10:00', 'Urgente', 'Enviada');
+INSERT INTO skillModulo (id_skill, id_modulo, orden) VALUES 
+(1, 3, 1),
+(2, 2, 1),
+(3, 2, 2),
+(4, 7, 1),
+(6, 4, 1),
+(7, 6, 1),
+(8, 5, 1),
+(9, 10, 1),
+(10, 9, 1),
+(1, 6, 2);
 
--- 11. bdAsociados (tables with foreign key dependencies)
-INSERT INTO bdAsociados (id_ruta, id_sgbd, es_principal) VALUES
-(1, 1, 1), (1, 3, 0),
-(2, 2, 1), (2, 10, 0),
-(3, 3, 1), (3, 1, 0),
-(4, 1, 1), (4, 2, 0),
-(5, 3, 1), (5, 1, 0),
-(6, 2, 1), (6, 5, 0),
-(7, 1, 1), (7, 5, 0),
-(8, 2, 1), (8, 7, 0),
-(9, 3, 1), (9, 1, 0),
-(10, 1, 1), (10, 2, 0);
+INSERT INTO sesionTrabajo (id_modulo, nombre, descripcion, duracion_horas, orden) VALUES 
+(1, 'Introducción a la Programación', 'Conceptos básicos y lógica de programación', 4, 1),
+(1, 'Variables y Tipos de Datos', 'Manejo de variables y tipos de datos', 4, 2),
+(2, 'Estructura HTML', 'Elementos básicos de HTML', 3, 1),
+(2, 'Estilos CSS', 'Aplicación de estilos con CSS', 3, 2),
+(3, 'Sintaxis JavaScript', 'Fundamentos de la sintaxis de JavaScript', 4, 1),
+(4, 'Modelo Relacional', 'Conceptos del modelo relacional', 3, 1),
+(5, 'Introducción a Node.js', 'Fundamentos de Node.js', 4, 1),
+(6, 'Componentes en React', 'Creación de componentes en React', 4, 1),
+(7, 'Sintaxis Python', 'Fundamentos de la sintaxis de Python', 3, 1),
+(8, 'Diseño de APIs', 'Principios de diseño de APIs REST', 3, 1);
 
--- 12. rutaModulo
-INSERT INTO rutaModulo (id_ruta, id_modulo, orden) VALUES
-(1, 1, 1), (1, 2, 2), (1, 3, 3), (1, 4, 4), (1, 5, 5),
-(2, 1, 1), (2, 3, 2), (2, 6, 3), (2, 4, 4), (2, 7, 5),
-(3, 1, 1), (3, 3, 2), (3, 9, 3), (3, 10, 4), (3, 6, 5),
-(4, 1, 1), (4, 3, 2), (4, 6, 3), (4, 7, 4), (4, 9, 5),
-(5, 1, 1), (5, 3, 2), (5, 6, 3), (5, 8, 4), (5, 9, 5),
-(6, 1, 1), (6, 3, 2), (6, 6, 3), (6, 10, 4), (6, 7, 5),
-(7, 1, 1), (7, 3, 2), (7, 6, 3), (7, 7, 4), (7, 9, 5),
-(8, 1, 1), (8, 3, 2), (8, 6, 3), (8, 10, 4), (8, 7, 5),
-(9, 1, 1), (9, 4, 2), (9, 5, 3), (9, 6, 4), (9, 7, 5),
-(10, 1, 1), (10, 3, 2), (10, 6, 3), (10, 9, 4), (10, 10, 5);
+INSERT INTO notificacion (titulo, mensaje, tipo, estado) VALUES 
+('Bienvenida al Campus', 'Bienvenido a Campuslands, estamos felices de tenerte con nosotros', 'Informativa', 'Enviada'),
+('Cambio de Horario', 'Se ha modificado el horario de clases para el próximo mes', 'Informativa', 'Enviada'),
+('Evaluación Pendiente', 'Tienes una evaluación pendiente para mañana', 'Alerta', 'Pendiente'),
+('Mantenimiento Plataforma', 'La plataforma estará en mantenimiento este fin de semana', 'Informativa', 'Enviada'),
+('Entrega de Proyecto', 'La fecha límite para la entrega del proyecto es el viernes', 'Alerta', 'Enviada'),
+('Reunión Urgente', 'Se convoca a reunión urgente mañana a las 10:00', 'Urgente', 'Pendiente'),
+('Nuevo Recurso Disponible', 'Se ha añadido nuevo material de estudio a la plataforma', 'Informativa', 'Enviada'),
+('Cambio de Trainer', 'Se ha asignado un nuevo trainer para el módulo actual', 'Informativa', 'Pendiente'),
+('Problema Técnico', 'Estamos experimentando problemas técnicos en la plataforma', 'Alerta', 'Enviada'),
+('Felicitaciones', 'Felicitaciones por completar el módulo con excelentes calificaciones', 'Informativa', 'Enviada');
 
--- 13. camper
-INSERT INTO camper (documento, nombres, apellidos, fecha_nacimiento, email, id_estado, id_nivel_riesgo, fecha_registro, id_sede) VALUES
-('1001234567', 'Carlos Andrés', 'Gómez Pérez', '2000-05-15', 'carlos.gomez@email.com', 4, 1, '2023-01-10', 1),
-('1002345678', 'María Fernanda', 'López Rodríguez', '1999-08-22', 'maria.lopez@email.com', 4, 2, '2023-01-15', 1),
-('1003456789', 'Juan David', 'Martínez Sánchez', '2001-03-10', 'juan.martinez@email.com', 4, 1, '2023-02-01', 2),
-('1004567890', 'Ana Sofía', 'Ramírez Torres', '2000-11-05', 'ana.ramirez@email.com', 5, 1, '2022-07-20', 1),
-('1005678901', 'Diego Alejandro', 'Hernández Castro', '1998-06-30', 'diego.hernandez@email.com', 6, 3, '2022-08-15', 2),
-('1006789012', 'Valentina', 'García Morales', '2002-01-25', 'valentina.garcia@email.com', 4, 2, '2023-03-05', 1),
-('1007890123', 'Santiago', 'Díaz Vargas', '1999-12-12', 'santiago.diaz@email.com', 7, 3, '2022-09-10', 3),
-('1008901234', 'Camila Andrea', 'Ortiz Jiménez', '2001-07-08', 'camila.ortiz@email.com', 4, 1, '2023-02-20', 2),
-('1009012345', 'Sebastián', 'Rojas Medina', '2000-04-18', 'sebastian.rojas@email.com', 4, 2, '2023-01-25', 1),
-('1010123456', 'Isabella', 'Mendoza Quintero', '1999-09-27', 'isabella.mendoza@email.com', 5, 1, '2022-06-15', 3);
+INSERT INTO sede (nombre, direccion, ciudad, capacidad_total, nit, telefono_principal, email_contacto) VALUES 
+('Campus Central', 'Calle 123 #45-67', 'Bucaramanga', 500, '900123456-7', '6017654321', 'central@campuslands.com'),
+('Campus Norte', 'Avenida 89 #12-34', 'Bogotá', 350, '900123456-8', '6017654322', 'norte@campuslands.com'),
+('Campus Sur', 'Carrera 56 #78-90', 'Medellín', 300, '900123456-9', '6017654323', 'sur@campuslands.com'),
+('Campus Este', 'Diagonal 12 #34-56', 'Cali', 250, '900123457-0', '6017654324', 'este@campuslands.com'),
+('Campus Oeste', 'Transversal 78 #90-12', 'Barranquilla', 200, '900123457-1', '6017654325', 'oeste@campuslands.com'),
+('Campus Virtual', 'En línea', 'Nacional', 1000, '900123457-2', '6017654326', 'virtual@campuslands.com'),
+('Campus Empresarial', 'Calle 45 #67-89', 'Bucaramanga', 150, '900123457-3', '6017654327', 'empresarial@campuslands.com'),
+('Campus Tecnológico', 'Avenida 23 #45-67', 'Bogotá', 300, '900123457-4', '6017654328', 'tecnologico@campuslands.com'),
+('Campus Innovación', 'Carrera 78 #90-12', 'Medellín', 200, '900123457-5', '6017654329', 'innovacion@campuslands.com'),
+('Campus Internacional', 'Calle 34 #56-78', 'Cali', 180, '900123457-6', '6017654330', 'internacional@campuslands.com');
 
--- 14. areaSalon
-INSERT INTO areaSalon (nombre, capacidad, descripcion, id_sede) VALUES
-('Sala Turing', 33, 'Sala principal de formación', 1),
-('Sala Jobs', 33, 'Sala de desarrollo web', 1),
-('Sala Gates', 33, 'Sala de programación avanzada', 1),
-('Sala Hopper', 33, 'Sala de bases de datos', 2),
-('Sala Lovelace', 33, 'Sala de desarrollo backend', 2),
-('Sala Berners-Lee', 33, 'Sala de desarrollo frontend', 1),
-('Sala Torvalds', 33, 'Sala de sistemas operativos', 2),
-('Sala Ritchie', 33, 'Sala de lenguajes de programación', 3),
-('Sala Gosling', 33, 'Sala de Java y tecnologías relacionadas', 3),
-('Sala Knuth', 33, 'Sala de algoritmos avanzados', 1);
+INSERT INTO bdAsociados (id_ruta, id_sgbd, es_principal) VALUES 
+(1, 1, TRUE),
+(1, 2, FALSE),
+(2, 5, TRUE),
+(3, 1, TRUE),
+(4, 3, TRUE),
+(5, 2, TRUE),
+(6, 1, TRUE),
+(7, 3, TRUE),
+(8, 6, TRUE),
+(9, 3, FALSE);
 
--- 15. trainer
-INSERT INTO trainer (documento, nombres, apellidos, email, telefono, fecha_contratacion, especialidad, id_sede) VALUES
-('80123456', 'Juan Carlos', 'Rodríguez Pérez', 'juan.rodriguez@campuslands.com', '3101234567', '2022-01-10', 'Desarrollo Web', 1),
-('81234567', 'María Alejandra', 'Gómez Sánchez', 'maria.gomez@campuslands.com', '3202345678', '2022-02-15', 'Bases de Datos', 1),
-('82345678', 'Carlos Andrés', 'López Martínez', 'carlos.lopez@campuslands.com', '3303456789', '2022-03-20', 'Programación Backend', 2),
-('83456789', 'Ana María', 'Pérez Ramírez', 'ana.perez@campuslands.com', '3404567890', '2022-04-25', 'Desarrollo Frontend', 2),
-('84567890', 'Luis Fernando', 'Martínez Gómez', 'luis.martinez@campuslands.com', '3505678901', '2022-05-30', 'Inteligencia Artificial', 3),
-('85678901', 'Patricia', 'Sánchez López', 'patricia.sanchez@campuslands.com', '3606789012', '2022-06-05', 'Desarrollo Móvil', 3),
-('86789012', 'Roberto', 'Hernández Pérez', 'roberto.hernandez@campuslands.com', '3707890123', '2022-07-10', 'DevOps', 1),
-('87890123', 'Claudia', 'Ramírez Martínez', 'claudia.ramirez@campuslands.com', '3808901234', '2022-08-15', 'Ciberseguridad', 2),
-('88901234', 'Jorge', 'Díaz Sánchez', 'jorge.diaz@campuslands.com', '3909012345', '2022-09-20', 'Blockchain', 3),
-('89012345', 'Mónica', 'Torres Gómez', 'monica.torres@campuslands.com', '3010123456', '2022-10-25', 'UX/UI Design', 1);
+INSERT INTO rutaModulo (id_ruta, id_modulo, orden) VALUES 
+(1, 1, 1),
+(1, 2, 2),
+(1, 3, 3),
+(1, 4, 4),
+(2, 1, 1),
+(2, 4, 2),
+(2, 5, 3),
+(3, 1, 1),
+(3, 2, 2),
+(3, 6, 3);
 
--- 16. datosCamper
-INSERT INTO datosCamper (doc_camper, direccion, ciudad, fecha_actualizacion) VALUES
-('1001234567', 'Calle 45 #23-67', 'Bucaramanga', '2023-01-10'),
-('1002345678', 'Carrera 30 #15-45', 'Bucaramanga', '2023-01-15'),
-('1003456789', 'Avenida 68 #78-23', 'Bogotá', '2023-02-01'),
-('1004567890', 'Calle 80 #45-12', 'Bucaramanga', '2022-07-20'),
-('1005678901', 'Carrera 7 #120-35', 'Bogotá', '2022-08-15'),
-('1006789012', 'Avenida Santander #56-78', 'Bucaramanga', '2023-03-05'),
-('1007890123', 'Calle 33 #25-40', 'Medellín', '2022-09-10'),
-('1008901234', 'Carrera 52 #70-15', 'Bogotá', '2023-02-20'),
-('1009012345', 'Avenida Oriental #45-67', 'Bucaramanga', '2023-01-25'),
-('1010123456', 'Calle 10 #15-30', 'Medellín', '2022-06-15');
+INSERT INTO camper (documento, nombres, apellidos, fecha_nacimiento, email, id_estado, id_nivel_riesgo, fecha_registro, id_sede) VALUES 
+('1001234567', 'Juan Carlos', 'Pérez Gómez', '2000-05-15', 'juan.perez@example.com', 1, 1, '2023-01-10', 1),
+('1001234568', 'María Fernanda', 'López Rodríguez', '2001-07-20', 'maria.lopez@example.com', 1, 2, '2023-01-12', 1),
+('1001234569', 'Carlos Andrés', 'Martínez Vargas', '1999-03-25', 'carlos.martinez@example.com', 2, 1, '2023-01-15', 2),
+('1001234570', 'Ana María', 'García Sánchez', '2002-11-10', 'ana.garcia@example.com', 2, 3, '2023-01-18', 2),
+('1001234571', 'Luis Felipe', 'Hernández Torres', '2000-09-05', 'luis.hernandez@example.com', 1, 2, '2023-01-20', 3),
+('1001234572', 'Laura Valentina', 'Díaz Castro', '2001-04-30', 'laura.diaz@example.com', 3, 1, '2023-01-22', 3),
+('1001234573', 'Andrés Felipe', 'Ramírez Moreno', '1999-12-15', 'andres.ramirez@example.com', 2, 4, '2023-01-25', 4),
+('1001234574', 'Sofía Alejandra', 'Torres Medina', '2002-08-20', 'sofia.torres@example.com', 1, 2, '2023-01-28', 4),
+('1001234575', 'Daniel Eduardo', 'Rojas Vargas', '2000-06-25', 'daniel.rojas@example.com', 2, 3, '2023-01-30', 5),
+('1001234576', 'Valentina', 'Morales Gutiérrez', '2001-02-14', 'valentina.morales@example.com', 1, 1, '2023-02-01', 5);
 
--- 17. telefonos
-INSERT INTO telefonos (telefono, tipo, doc_camper) VALUES
-('3001234567', 'Móvil', '1001234567'),
-('3112345678', 'Móvil', '1002345678'),
-('3223456789', 'Móvil', '1003456789'),
-('3334567890', 'Móvil', '1004567890'),
-('3445678901', 'Móvil', '1005678901'),
-('3556789012', 'Móvil', '1006789012'),
-('3667890123', 'Móvil', '1007890123'),
-('3778901234', 'Móvil', '1008901234'),
-('3889012345', 'Móvil', '1009012345'),
-('3990123456', 'Móvil', '1010123456');
+INSERT INTO areaSalon (nombre, capacidad, descripcion, id_sede, estado) VALUES 
+('Sala Apolo', 30, 'Sala principal para clases teóricas', 1, 'Activa'),
+('Sala Artemis', 25, 'Sala para talleres prácticos', 1, 'Activa'),
+('Sala Atenea', 35, 'Sala para conferencias y eventos', 2, 'Activa'),
+('Sala Hermes', 20, 'Sala para trabajo en equipo', 2, 'Activa'),
+('Sala Zeus', 40, 'Sala principal para clases teóricas', 3, 'Activa'),
+('Sala Poseidón', 30, 'Sala para talleres prácticos', 3, 'En mantenimiento'),
+('Sala Hades', 25, 'Sala para trabajo en equipo', 4, 'Activa'),
+('Sala Afrodita', 35, 'Sala para conferencias y eventos', 4, 'Activa'),
+('Sala Hefesto', 30, 'Sala para talleres prácticos', 5, 'Activa'),
+('Sala Dionisio', 20, 'Sala para trabajo en equipo', 5, 'Inactiva');
 
--- 18. acudiente
-INSERT INTO acudiente (doc_acudiente, nombres, apellidos, parentesco, telefono, email, doc_camper) VALUES
-('52123456', 'Pedro Antonio', 'Gómez Ramírez', 'Padre', '3101234567', 'pedro.gomez@email.com', '1001234567'),
-('53234567', 'Carmen Elena', 'López Sánchez', 'Madre', '3202345678', 'carmen.lopez@email.com', '1002345678'),
-('54345678', 'Roberto Carlos', 'Martínez Pérez', 'Padre', '3303456789', 'roberto.martinez@email.com', '1003456789'),
-('55456789', 'Luz Marina', 'Ramírez Gómez', 'Madre', '3404567890', 'luz.ramirez@email.com', '1004567890'),
-('56567890', 'Jorge Luis', 'Hernández Vargas', 'Padre', '3505678901', 'jorge.hernandez@email.com', '1005678901'),
-('57678901', 'María Teresa', 'García López', 'Madre', '3606789012', 'maria.garcia@email.com', '1006789012'),
-('58789012', 'Carlos Alberto', 'Díaz Martínez', 'Padre', '3707890123', 'carlos.diaz@email.com', '1007890123'),
-('59890123', 'Ana María', 'Ortiz Hernández', 'Madre', '3808901234', 'ana.ortiz@email.com', '1008901234'),
-('60901234', 'José Manuel', 'Rojas García', 'Padre', '3909012345', 'jose.rojas@email.com', '1009012345'),
-('61012345', 'Patricia', 'Mendoza Díaz', 'Madre', '3010123456', 'patricia.mendoza@email.com', '1010123456');
+INSERT INTO trainer (documento, nombres, apellidos, email, telefono, fecha_contratacion, especialidad, id_sede) VALUES 
+('2001234567', 'Roberto', 'González Pérez', 'roberto.gonzalez@campuslands.com', '3001234567', '2022-01-15', 'Desarrollo Web', 1),
+('2001234568', 'Carolina', 'Martínez López', 'carolina.martinez@campuslands.com', '3001234568', '2022-02-20', 'Bases de Datos', 1),
+('2001234569', 'Javier', 'Rodríguez García', 'javier.rodriguez@campuslands.com', '3001234569', '2022-03-10', 'Programación Backend', 2),
+('2001234570', 'Patricia', 'Sánchez Hernández', 'patricia.sanchez@campuslands.com', '3001234570', '2022-04-05', 'Programación Frontend', 2),
+('2001234571', 'Miguel', 'Torres Ramírez', 'miguel.torres@campuslands.com', '3001234571', '2022-05-12', 'Ciencia de Datos', 3),
+('2001234572', 'Lucía', 'Vargas Díaz', 'lucia.vargas@campuslands.com', '3001234572', '2022-06-18', 'Inteligencia Artificial', 3),
+('2001234573', 'Fernando', 'Castro Rojas', 'fernando.castro@campuslands.com', '3001234573', '2022-07-22', 'DevOps', 4),
+('2001234574', 'Mónica', 'Medina Morales', 'monica.medina@campuslands.com', '3001234574', '2022-08-30', 'Ciberseguridad', 4),
+('2001234575', 'Ricardo', 'Gutiérrez Ortiz', 'ricardo.gutierrez@campuslands.com', '3001234575', '2022-09-15', 'Desarrollo Móvil', 5),
+('2001234576', 'Natalia', 'Ortiz Jiménez', 'natalia.ortiz@campuslands.com', '3001234576', '2022-10-20', 'UX/UI Design', 5);
 
--- 19. asignacionArea
-INSERT INTO asignacionArea (id_area, id_horario, fecha_inicio, fecha_fin) VALUES
-(1, 1, '2023-01-15', '2023-04-15'),
-(2, 2, '2023-01-15', '2023-04-15'),
-(3, 3, '2023-01-15', '2023-04-15'),
-(4, 1, '2023-01-15', '2023-04-15'),
-(5, 2, '2023-01-15', '2023-04-15'),
-(6, 3, '2023-01-15', '2023-04-15'),
-(7, 1, '2023-01-15', '2023-04-15'),
-(8, 2, '2023-01-15', '2023-04-15'),
-(9, 3, '2023-01-15', '2023-04-15'),
-(10, 1, '2023-01-15', '2023-04-15');
+INSERT INTO datosCamper (doc_camper, direccion, ciudad, fecha_actualizacion) VALUES 
+('1001234567', 'Calle 45 #23-67', 'Bucaramanga', '2023-01-10 10:30:00'),
+('1001234568', 'Carrera 78 #34-56', 'Bucaramanga', '2023-01-12 11:45:00'),
+('1001234569', 'Avenida 23 #67-89', 'Bogotá', '2023-01-15 09:15:00'),
+('1001234570', 'Diagonal 56 #78-90', 'Bogotá', '2023-01-18 14:20:00'),
+('1001234571', 'Transversal 34 #12-34', 'Medellín', '2023-01-20 16:30:00'),
+('1001234572', 'Calle 67 #45-67', 'Medellín', '2023-01-22 10:10:00'),
+('1001234573', 'Carrera 12 #23-45', 'Cali', '2023-01-25 11:25:00'),
+('1001234574', 'Avenida 45 #56-78', 'Cali', '2023-01-28 15:40:00'),
+('1001234575', 'Diagonal 78 #90-12', 'Barranquilla', '2023-01-30 09:50:00'),
+('1001234576', 'Transversal 90 #12-34', 'Barranquilla', '2023-02-01 13:15:00');
 
--- 20. trainerSkills
-INSERT INTO trainerSkills (id_trainer, id_skill, nivel) VALUES
-(1, 1, 'Experto'), (1, 4, 'Experto'), (1, 7, 'Avanzado'), (1, 9, 'Intermedio'),
-(2, 5, 'Experto'), (2, 6, 'Avanzado'), (2, 3, 'Intermedio'), (2, 10, 'Básico'),
-(3, 2, 'Experto'), (3, 10, 'Experto'), (3, 5, 'Avanzado'), (3, 1, 'Intermedio'),
-(4, 4, 'Experto'), (4, 7, 'Experto'), (4, 1, 'Avanzado'), (4, 8, 'Avanzado'),
-(5, 3, 'Experto'), (5, 6, 'Experto'), (5, 6, 'Avanzado'), (5, 10, 'Intermedio'),
-(6, 1, 'Experto'), (6, 7, 'Avanzado'), (6, 9, 'Avanzado'), (6, 3, 'Intermedio'),
-(7, 2, 'Experto'), (7, 3, 'Experto'), (7, 4, 'Experto'), (7, 9, 'Avanzado'),
-(8, 4, 'Experto'), (8, 2, 'Avanzado'), (8, 3, 'Avanzado'), (8, 5, 'Intermedio'),
-(9, 1, 'Avanzado'), (9, 6, 'Experto'), (9, 9, 'Avanzado'), (9, 2, 'Intermedio'),
-(10, 4, 'Experto'), (10, 7, 'Experto'), (10, 8, 'Avanzado'), (10, 1, 'Avanzado');
+INSERT INTO telefonos (telefono, tipo, doc_camper) VALUES 
+('3101234567', 'Móvil', '1001234567'),
+('6017654321', 'Fijo', '1001234567'),
+('3101234568', 'Móvil', '1001234568'),
+('3101234569', 'Móvil', '1001234569'),
+('6017654322', 'Fijo', '1001234569'),
+('3101234570', 'Móvil', '1001234570'),
+('3101234571', 'Móvil', '1001234571'),
+('6017654323', 'Fijo', '1001234571'),
+('3101234572', 'Móvil', '1001234572'),
+('3101234573', 'Móvil', '1001234573');
 
--- 21. rutaTrainer
-INSERT INTO rutaTrainer (id_trainer, id_ruta, fecha_asignacion, fecha_fin) VALUES
-(1, 1, '2023-01-15', '2023-04-15'),
-(2, 1, '2023-01-15', '2023-04-15'),
-(3, 2, '2023-01-15', '2023-04-15'),
-(4, 2, '2023-01-15', '2023-04-15'),
-(5, 3, '2023-01-15', '2023-04-15'),
-(6, 3, '2023-01-15', '2023-04-15'),
-(7, 4, '2023-01-15', '2023-04-15'),
-(8, 5, '2023-01-15', '2023-04-15'),
-(9, 6, '2023-01-15', '2023-04-15'),
-(10, 7, '2023-01-15', '2023-04-15');
+INSERT INTO acudiente (doc_acudiente, nombres, apellidos, parentesco, telefono, email, doc_camper) VALUES 
+('3001234567', 'Pedro', 'Pérez Martínez', 'Padre', '3201234567', 'pedro.perez@example.com', '1001234567'),
+('3001234568', 'María', 'López García', 'Madre', '3201234568', 'maria.lopez@example.com', '1001234568'),
+('3001234569', 'José', 'Martínez Rodríguez', 'Padre', '3201234569', 'jose.martinez@example.com', '1001234569'),
+('3001234570', 'Ana', 'García Sánchez', 'Madre', '3201234570', 'ana.garcia@example.com', '1001234570'),
+('3001234571', 'Carlos', 'Hernández Vargas', 'Padre', '3201234571', 'carlos.hernandez@example.com', '1001234571'),
+('3001234572', 'Laura', 'Díaz Torres', 'Madre', '3201234572', 'laura.diaz@example.com', '1001234572'),
+('3001234573', 'Andrés', 'Ramírez Castro', 'Padre', '3201234573', 'andres.ramirez@example.com', '1001234573'),
+('3001234574', 'Sofía', 'Torres Medina', 'Madre', '3201234574', 'sofia.torres@example.com', '1001234574'),
+('3001234575', 'Daniel', 'Rojas Morales', 'Padre', '3201234575', 'daniel.rojas@example.com', '1001234575'),
+('3001234576', 'Valentina', 'Morales Gutiérrez', 'Madre', '3201234576', 'valentina.morales@example.com', '1001234576');
 
--- 22. inscripciones
-INSERT INTO inscripciones (doc_camper, id_ruta, fecha_inscripcion, fecha_inicio, fecha_fin_estimada, fecha_fin_real, estado) VALUES
-('1001234567', 1, '2023-01-05', '2023-01-15', '2023-10-15', NULL, 'Aprobada'),
-('1002345678', 1, '2023-01-05', '2023-01-15', '2023-10-15', NULL, 'Aprobada'),
-('1003456789', 2, '2023-01-10', '2023-01-15', '2023-08-15', NULL, 'Aprobada'),
-('1004567890', 1, '2022-07-10', '2022-07-20', '2023-04-20', '2023-04-15', 'Completada'),
-('1005678901', 2, '2022-08-05', '2022-08-15', '2023-03-15', NULL, 'Cancelada'),
-('1006789012', 1, '2023-02-25', '2023-03-05', '2023-12-05', NULL, 'Aprobada'),
-('1007890123', 3, '2022-09-01', '2022-09-10', '2023-07-10', NULL, 'Cancelada'),
-('1008901234', 2, '2023-02-10', '2023-02-20', '2023-09-20', NULL, 'Aprobada'),
-('1009012345', 1, '2023-01-15', '2023-01-25', '2023-10-25', NULL, 'Aprobada'),
-('1010123456', 3, '2022-06-05', '2022-06-15', '2023-04-15', '2023-04-10', 'Completada');
+INSERT INTO asignacionArea (id_area, id_horario, fecha_inicio, fecha_fin) VALUES 
+(1, 1, '2023-01-15', '2023-06-15'),
+(2, 2, '2023-01-15', '2023-06-15'),
+(3, 1, '2023-01-20', '2023-06-20'),
+(4, 2, '2023-01-20', '2023-06-20'),
+(5, 1, '2023-01-25', '2023-06-25'),
+(6, 2, '2023-01-25', '2023-06-25'),
+(7, 1, '2023-02-01', '2023-07-01'),
+(8, 2, '2023-02-01', '2023-07-01'),
+(9, 1, '2023-02-05', '2023-07-05'),
+(10, 2, '2023-02-05', '2023-07-05');
 
--- 23. moduloNotas
-INSERT INTO moduloNotas (doc_camper, id_modulo, id_tipo_evaluacion, nota, fecha_evaluacion, observaciones) VALUES
-('1001234567', 1, 1, 85.50, '2023-02-10', 'Buen dominio de conceptos básicos'),
-('1001234567', 1, 2, 78.30, '2023-02-15', 'Necesita mejorar en implementación de algoritmos'),
-('1001234567', 1, 3, 90.00, '2023-02-20', 'Excelente participación en actividades'),
-('1002345678', 1, 1, 92.30, '2023-02-10', 'Excelente comprensión de conceptos algorítmicos'),
-('1002345678', 1, 2, 88.70, '2023-02-15', 'Buena implementación de soluciones algorítmicas'),
-('1002345678', 1, 3, 95.50, '2023-02-20', 'Trabajos destacados y bien presentados'),
-('1003456789', 1, 1, 75.40, '2023-02-10', 'Comprensión básica de conceptos'),
-('1003456789', 1, 2, 68.20, '2023-02-15', 'Dificultades en implementación práctica'),
-('1003456789', 1, 3, 82.00, '2023-02-20', 'Buena participación en clase'),
-('1004567890', 1, 1, 88.60, '2022-08-10', 'Buen dominio teórico');
+INSERT INTO trainerSkills (id_trainer, id_skill, nivel) VALUES 
+(1, 1, 'Experto'),
+(1, 2, 'Experto'),
+(1, 3, 'Avanzado'),
+(2, 6, 'Experto'),
+(3, 1, 'Experto'),
+(3, 8, 'Avanzado'),
+(4, 2, 'Experto'),
+(4, 3, 'Experto'),
+(5, 4, 'Experto'),
+(6, 7, 'Experto');
 
--- 24. horarioTrainer
-INSERT INTO horarioTrainer (id_trainer, id_horario, id_area, dia_semana) VALUES
-(1, 1, 1, 'Lunes'), (1, 1, 1, 'Miércoles'), (1, 1, 1, 'Viernes'),
-(2, 2, 2, 'Lunes'), (2, 2, 2, 'Miércoles'), (2, 2, 2, 'Viernes'),
-(3, 3, 3, 'Martes'), (3, 3, 3, 'Jueves'), (3, 3, 3, 'Sábado'),
-(4, 1, 4, 'Martes'), (4, 1, 4, 'Jueves'), (4, 1, 4, 'Sábado'),
-(5, 2, 5, 'Lunes'), (5, 2, 5, 'Miércoles'), (5, 2, 5, 'Viernes'),
-(6, 3, 6, 'Martes'), (6, 3, 6, 'Jueves'), (6, 3, 6, 'Sábado'),
-(7, 1, 7, 'Lunes'), (7, 1, 7, 'Miércoles'), (7, 1, 7, 'Viernes'),
-(8, 2, 8, 'Martes'), (8, 2, 8, 'Jueves'), (8, 2, 8, 'Sábado'),
-(9, 3, 9, 'Lunes'), (9, 3, 9, 'Miércoles'), (9, 3, 9, 'Viernes'),
-(10, 1, 10, 'Martes'), (10, 1, 10, 'Jueves'), (10, 1, 10, 'Sábado');
+INSERT INTO inscripciones (doc_camper, id_ruta, fecha_inscripcion, fecha_inicio, fecha_fin_estimada, fecha_fin_real, estado) VALUES 
+('1001234567', 1, '2023-01-05', '2023-01-15', '2024-01-15', NULL, 'Aprobada'),
+('1001234568', 1, '2023-01-05', '2023-01-15', '2024-01-15', NULL, 'Aprobada'),
+('1001234569', 2, '2023-01-10', '2023-01-20', '2023-10-20', NULL, 'Aprobada'),
+('1001234570', 2, '2023-01-10', '2023-01-20', '2023-10-20', NULL, 'Aprobada'),
+('1001234571', 3, '2023-01-15', '2023-01-25', '2023-07-25', NULL, 'Aprobada'),
+('1001234572', 3, '2023-01-15', '2023-01-25', '2023-07-25', '2023-07-20', 'Completada'),
+('1001234573', 4, '2023-01-20', '2023-02-01', '2023-12-01', NULL, 'Aprobada'),
+('1001234574', 4, '2023-01-20', '2023-02-01', '2023-12-01', NULL, 'Aprobada'),
+('1001234575', 5, '2023-01-25', '2023-02-05', '2023-10-05', NULL, 'Aprobada'),
+('1001234576', 5, '2023-01-25', '2023-02-05', '2023-10-05', NULL, 'Aprobada');
 
--- 25. asignacionCamper
-INSERT INTO asignacionCamper (doc_camper, id_area, id_horario, fecha_inicio, fecha_fin) VALUES
-('1001234567', 1, 1, '2023-01-15', '2023-04-15'),
-('1002345678', 1, 1, '2023-01-15', '2023-04-15'),
-('1003456789', 3, 3, '2023-01-15', '2023-04-15'),
-('1004567890', 2, 2, '2022-07-20', '2022-10-20'),
-('1005678901', 3, 3, '2022-08-15', '2022-11-15'),
-('1006789012', 1, 1, '2023-03-05', '2023-06-05'),
-('1007890123', 5, 2, '2022-09-10', '2022-12-10'),
-('1008901234', 3, 3, '2023-02-20', '2023-05-20'),
-('1009012345', 2, 2, '2023-01-25', '2023-04-25'),
-('1010123456', 5, 2, '2022-06-15', '2022-09-15');
+INSERT INTO skillsNotas (doc_camper, id_modulo, id_tipo_evaluacion, nota, fecha_evaluacion, observaciones) VALUES 
+('1001234567', 1, 1, 85.50, '2023-02-15', 'Buen desempeño en conceptos básicos'),
+('1001234567', 1, 2, 90.00, '2023-02-20', 'Excelente comprensión teórica'),
+('1001234568', 1, 1, 78.50, '2023-02-15', 'Necesita reforzar algunos conceptos'),
+('1001234568', 1, 2, 82.00, '2023-02-20', 'Mejoró en la evaluación teórica'),
+('1001234569', 2, 1, 92.00, '2023-02-25', 'Dominio excepcional de los temas'),
+('1001234569', 2, 2, 95.50, '2023-03-01', 'Desempeño sobresaliente'),
+('1001234570', 2, 1, 80.00, '2023-02-25', 'Buen manejo de conceptos'),
+('1001234570', 2, 2, 85.00, '2023-03-01', 'Mejoró en la comprensión teórica'),
+('1001234571', 3, 1, 75.00, '2023-03-05', 'Necesita más práctica'),
+('1001234571', 3, 2, 78.50, '2023-03-10', 'Avance moderado en comprensión teórica');
 
--- 26. notificacionDestinatario
-INSERT INTO notificacionDestinatario (id_notificacion, doc_camper, id_trainer, fecha_lectura) VALUES
-(1, '1001234567', NULL, '2023-01-15 09:30:00'),
-(1, '1002345678', NULL, '2023-01-15 10:15:00'),
-(1, '1003456789', NULL, '2023-01-15 11:45:00'),
-(2, NULL, 1, '2023-02-01 11:00:00'),
-(2, NULL, 2, '2023-02-01 11:30:00'),
-(3, '1001234567', NULL, '2023-02-15 10:00:00'),
-(3, '1002345678', NULL, '2023-02-15 10:30:00'),
-(3, '1006789012', NULL, '2023-02-15 11:15:00'),
-(4, NULL, 3, '2023-03-01 14:30:00'),
-(4, NULL, 4, '2023-03-01 15:00:00');
+INSERT INTO horarioTrainer (id_trainer, id_horario, id_area, dia_semana) VALUES 
+(1, 1, 1, 'Lunes'),
+(1, 1, 1, 'Miércoles'),
+(2, 2, 2, 'Martes'),
+(2, 2, 2, 'Jueves'),
+(3, 1, 3, 'Lunes'),
+(3, 1, 3, 'Viernes'),
+(4, 2, 4, 'Martes'),
+(4, 2, 4, 'Jueves'),
+(5, 1, 5, 'Miércoles'),
+(5, 1, 5, 'Viernes');
 
--- 27. asistencia
-INSERT INTO asistencia (doc_camper, fecha, estado, observaciones) VALUES
-('1001234567', '2023-01-16', 'Presente', 'Participación activa'),
-('1002345678', '2023-01-16', 'Presente', 'Participación activa'),
-('1003456789', '2023-01-16', 'Presente', 'Llegó 5 minutos tarde'),
-('1001234567', '2023-01-17', 'Presente', 'Participación activa'),
-('1002345678', '2023-01-17', 'Ausente', 'No justificó'),
-('1003456789', '2023-01-17', 'Presente', 'Participación activa'),
-('1001234567', '2023-01-18', 'Presente', 'Participación activa'),
-('1002345678', '2023-01-18', 'Presente', 'Participación activa'),
-('1003456789', '2023-01-18', 'Tardanza', 'Llegó 15 minutos tarde'),
-('1001234567', '2023-01-19', 'Presente', 'Participación activa');
+INSERT INTO asignacionCamper (doc_camper, id_area, id_horario, fecha_inicio, fecha_fin) VALUES 
+('1001234567', 1, 1, '2023-01-15', '2023-06-15'),
+('1001234568', 1, 1, '2023-01-15', '2023-06-15'),
+('1001234569', 3, 1, '2023-01-20', '2023-06-20'),
+('1001234570', 3, 1, '2023-01-20', '2023-06-20'),
+('1001234571', 5, 1, '2023-01-25', '2023-06-25'),
+('1001234572', 5, 1, '2023-01-25', '2023-06-25'),
+('1001234573', 7, 1, '2023-02-01', '2023-07-01'),
+('1001234574', 7, 1, '2023-02-01', '2023-07-01'),
+('1001234575', 9, 1, '2023-02-05', '2023-07-05'),
+('1001234576', 9, 1, '2023-02-05', '2023-07-05');
 
--- 28. seguimientoRendimiento
-INSERT INTO seguimientoRendimiento (doc_camper, id_modulo, semana, observaciones, recomendaciones, fecha_registro, id_trainer) VALUES
-('1001234567', 1, 1, 'Buen desempeño en conceptos básicos', 'Practicar más ejercicios de lógica', '2023-01-22', 1),
-('1002345678', 1, 1, 'Excelente comprensión de algoritmos', 'Continuar con el mismo ritmo de estudio', '2023-01-22', 1),
-('1003456789', 1, 1, 'Dificultades con algoritmos complejos', 'Dedicar más tiempo a ejercicios prácticos', '2023-01-22', 3),
-('1001234567', 1, 2, 'Mejora en implementación de algoritmos', 'Revisar conceptos de eficiencia algorítmica', '2023-01-29', 1),
-('1002345678', 1, 2, 'Mantiene buen rendimiento', 'Explorar algoritmos avanzados', '2023-01-29', 1),
-('1003456789', 1, 2, 'Progreso lento pero constante', 'Sesiones adicionales de tutoría', '2023-01-29', 3),
-('1001234567', 1, 3, 'Dominio de conceptos fundamentales', 'Prepararse para evaluación final del módulo', '2023-02-05', 1),
-('1002345678', 1, 3, 'Rendimiento sobresaliente', 'Ayudar a compañeros con dificultades', '2023-02-05', 1),
-('1003456789', 1, 3, 'Mejora significativa', 'Continuar con práctica diaria', '2023-02-05', 3),
-('1004567890', 1, 1, 'Buen nivel de comprensión inicial', 'Profundizar en estructuras de datos', '2022-07-25', 2);
+INSERT INTO moduloSGBD (id_modulo, id_sgbd) VALUES 
+(4, 1),
+(4, 2),
+(4, 6),
+(9, 3),
+(4, 5),
+(4, 7),
+(9, 8),
+(9, 9),
+(4, 4),
+(9, 10);
+
+INSERT INTO egresados (documento, nombres, apellidos, email, fecha_graduacion, id_ruta) VALUES 
+('9001234567', 'Felipe', 'Gómez Martínez', 'felipe.gomez@example.com', '2022-12-15', 1),
+('9001234568', 'Gabriela', 'Vargas López', 'gabriela.vargas@example.com', '2022-12-15', 1),
+('9001234569', 'Alejandro', 'Ruiz Sánchez', 'alejandro.ruiz@example.com', '2022-12-20', 2),
+('9001234570', 'Isabella', 'Mendoza García', 'isabella.mendoza@example.com', '2022-12-20', 2),
+('9001234571', 'Santiago', 'Ortega Hernández', 'santiago.ortega@example.com', '2023-01-10', 3),
+('9001234572', 'Valeria', 'Castro Torres', 'valeria.castro@example.com', '2023-01-10', 3),
+('9001234573', 'Mateo', 'Ríos Ramírez', 'mateo.rios@example.com', '2023-01-15', 4),
+('9001234574', 'Camila', 'Pardo Medina', 'camila.pardo@example.com', '2023-01-15', 4),
+('9001234575', 'Sebastián', 'Navarro Rojas', 'sebastian.navarro@example.com', '2023-01-20', 5),
+('9001234576', 'Mariana', 'Quintero Morales', 'mariana.quintero@example.com', '2023-01-20', 5);
+
+INSERT INTO cambiosRuta (id_ruta, descripcion, fecha_cambio) VALUES 
+(1, 'Actualización de contenidos del módulo de JavaScript', '2023-02-10 09:30:00'),
+(1, 'Incorporación de nuevas prácticas en React', '2023-02-15 11:45:00'),
+(2, 'Cambio en la duración del módulo de Java', '2023-02-20 14:20:00'),
+(2, 'Actualización de versiones de Spring', '2023-02-25 16:10:00'),
+(3, 'Incorporación de nuevas herramientas de diseño', '2023-03-01 10:30:00'),
+(3, 'Cambio en la metodología de evaluación', '2023-03-05 13:15:00'),
+(4, 'Actualización de bibliotecas de análisis de datos', '2023-03-10 15:40:00'),
+(4, 'Incorporación de nuevos datasets para prácticas', '2023-03-15 09:50:00'),
+(5, 'Cambio en las herramientas de CI/CD', '2023-03-20 11:25:00'),
+(5, 'Actualización de contenidos de Docker y Kubernetes', '2023-03-25 14:30:00');
+
+INSERT INTO campersModulosAsignados (doc_camper, id_modulo, estado) VALUES 
+('1001234567', 1, 'En curso'),
+('1001234567', 2, 'Pendiente'),
+('1001234568', 1, 'En curso'),
+('1001234568', 2, 'Pendiente'),
+('1001234569', 5, 'En curso'),
+('1001234569', 8, 'Pendiente'),
+('1001234570', 5, 'En curso'),
+('1001234570', 8, 'Pendiente'),
+('1001234571', 2, 'En curso'),
+('1001234571', 6, 'Pendiente');
+
+INSERT INTO plantillaModulos (id_ruta_base, id_modulo) VALUES 
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(2, 1),
+(2, 4),
+(2, 5),
+(3, 1),
+(3, 2),
+(3, 6);
+
+INSERT INTO notificacionesAutomatizadas (id_ruta, id_trainer, mensaje, fecha_envio) VALUES 
+(1, 1, 'Actualización en el módulo de JavaScript', '2023-02-10 10:00:00'),
+(1, 2, 'Cambio en horario de clases', '2023-02-15 12:30:00'),
+(2, 3, 'Nuevo material disponible para Java', '2023-02-20 15:00:00'),
+(2, 3, 'Recordatorio de entrega de proyecto', '2023-02-25 17:15:00'),
+(3, 4, 'Actualización de herramientas de diseño', '2023-03-01 11:00:00'),
+(3, 4, 'Cambio en criterios de evaluación', '2023-03-05 14:30:00'),
+(4, 5, 'Nuevos datasets para análisis', '2023-03-10 16:45:00'),
+(4, 5, 'Recordatorio de presentación final', '2023-03-15 10:15:00'),
+(5, 7, 'Actualización de herramientas DevOps', '2023-03-20 12:00:00'),
+(5, 7, 'Nuevo material sobre Docker', '2023-03-25 15:30:00');
+
+INSERT INTO notaFinal (doc_camper, id_modulo, nota_teorica, nota_practica, nota_quizzes, nota_final, aprobado, fecha_calculo) VALUES 
+('1001234567', 1, 85.00, 90.00, 88.00, 87.50, TRUE, '2023-03-01 10:00:00'),
+('1001234568', 1, 80.00, 85.00, 82.00, 82.50, TRUE, '2023-03-01 10:30:00'),
+('1001234569', 5, 92.00, 95.00, 90.00, 92.50, TRUE, '2023-03-05 11:00:00'),
+('1001234570', 5, 78.00, 82.00, 80.00, 80.00, TRUE, '2023-03-05 11:30:00'),
+('1001234571', 2, 75.00, 78.00, 76.00, 76.50, TRUE, '2023-03-10 12:00:00'),
+('1001234572', 2, 88.00, 92.00, 90.00, 90.00, TRUE, '2023-03-10 12:30:00'),
+('1001234573', 5, 82.00, 85.00, 83.00, 83.50, TRUE, '2023-03-15 13:00:00'),
+('1001234574', 5, 90.00, 93.00, 91.00, 91.50, TRUE, '2023-03-15 13:30:00'),
+('1001234575', 2, 70.00, 72.00, 68.00, 70.00, FALSE, '2023-03-20 14:00:00'),
+('1001234576', 2, 95.00, 98.00, 96.00, 96.50, TRUE, '2023-03-20 14:30:00');
+
+
+INSERT INTO historicoEstadoCamper (doc_camper, id_estado_anterior, id_estado_nuevo, fecha_cambio, motivo) VALUES 
+('1001234567', 1, 2, '2023-01-15 09:00:00', 'Inicio de formación'),
+('1001234568', 1, 2, '2023-01-15 09:30:00', 'Inicio de formación'),
+('1001234569', 1, 2, '2023-01-20 10:00:00', 'Inicio de formación'),
+('1001234570', 1, 2, '2023-01-20 10:30:00', 'Inicio de formación'),
+('1001234571', 1, 2, '2023-01-25 11:00:00', 'Inicio de formación'),
+('1001234572', 1, 2, '2023-01-25 11:30:00', 'Inicio de formación'),
+('1001234572', 2, 3, '2023-07-20 15:00:00', 'Finalización exitosa del programa'),
+('1001234573', 1, 2, '2023-02-01 12:00:00', 'Inicio de formación'),
+('1001234574', 1, 2, '2023-02-01 12:30:00', 'Inicio de formación'),
+('1001234575', 1, 2, '2023-02-05 13:00:00', 'Inicio de formación');
