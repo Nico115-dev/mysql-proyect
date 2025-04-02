@@ -1,420 +1,584 @@
 -- 1. Calcular el promedio ponderado de evaluaciones de un camper.
-DELIMITER //
-CREATE FUNCTION calcular_promedio_ponderado(
-    p_doc_camper INT, 
-    p_id_modulo INT
-) RETURNS DECIMAL(5,2)
-BEGIN
-    DECLARE v_nota_teorica DECIMAL(5,2);
-    DECLARE v_nota_practica DECIMAL(5,2);
-    DECLARE v_nota_quiz DECIMAL(5,2);
-    DECLARE v_promedio DECIMAL(5,2);
+DELIMITER $$
 
-    -- Obtener las notas de la evaluación
-    SELECT nota_teorica, nota_practica, nota_quiz
-    INTO v_nota_teorica, v_nota_practica, v_nota_quiz
-    FROM evaluacion
-    WHERE doc_camper = p_doc_camper AND id_modulo = p_id_modulo;
+CREATE FUNCTION calcularPromedioPonderado(doc_camper VARCHAR(11), id_modulo INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE promedio DECIMAL(5,2) DEFAULT 0;
+    DECLARE nota_teorica DECIMAL(5,2);
+    DECLARE nota_practica DECIMAL(5,2);
+    DECLARE nota_quizzes DECIMAL(5,2);
+    DECLARE porcentaje_teorico DECIMAL(5,2);
+    DECLARE porcentaje_practico DECIMAL(5,2);
+    DECLARE porcentaje_quizzes DECIMAL(5,2);
+
+    -- Obtener las notas de cada tipo de evaluación
+    SELECT nota 
+    INTO nota_teorica
+    FROM skillsNotas
+    WHERE doc_camper = doc_camper
+    AND id_modulo = id_modulo
+    AND id_tipo_evaluacion = (SELECT id FROM tipoEvaluacion WHERE nombre = 'Examen Teórico')
+    LIMIT 1;
+
+    SELECT nota 
+    INTO nota_practica
+    FROM skillsNotas
+    WHERE doc_camper = doc_camper
+    AND id_modulo = id_modulo
+    AND id_tipo_evaluacion = (SELECT id FROM tipoEvaluacion WHERE nombre = 'Evaluación Práctica')
+    LIMIT 1;
+
+    SELECT nota 
+    INTO nota_quizzes
+    FROM skillsNotas
+    WHERE doc_camper = doc_camper
+    AND id_modulo = id_modulo
+    AND id_tipo_evaluacion = (SELECT id FROM tipoEvaluacion WHERE nombre = 'Quiz')
+    LIMIT 1;
+
+    -- Obtener los porcentajes de las evaluaciones
+    SELECT porcentaje
+    INTO porcentaje_teorico
+    FROM tipoEvaluacion
+    WHERE nombre = 'Examen Teórico';
+
+    SELECT porcentaje
+    INTO porcentaje_practico
+    FROM tipoEvaluacion
+    WHERE nombre = 'Evaluación Práctica';
+
+    SELECT porcentaje
+    INTO porcentaje_quizzes
+    FROM tipoEvaluacion
+    WHERE nombre = 'Quiz';
 
     -- Calcular el promedio ponderado
-    SET v_promedio = (v_nota_teorica * 0.4) + (v_nota_practica * 0.4) + (v_nota_quiz * 0.2);
+    SET promedio = (nota_teorica * porcentaje_teorico / 100) + 
+                   (nota_practica * porcentaje_practico / 100) + 
+                   (nota_quizzes * porcentaje_quizzes / 100);
 
-    RETURN v_promedio;
-END //
+    RETURN promedio;
+END$$
+
 DELIMITER ;
 
 -- 2. Determinar si un camper aprueba o no un módulo específico.
-DELIMITER //
-CREATE FUNCTION aprobar_modulo(
-    p_doc_camper INT, 
-    p_id_modulo INT
-) RETURNS BOOLEAN
+DELIMITER $$
+
+CREATE FUNCTION aprobarModulo(doc_camper VARCHAR(11), id_modulo INT)
+RETURNS VARCHAR(50)
+DETERMINISTIC
 BEGIN
-    DECLARE v_nota_final DECIMAL(5,2);
+    DECLARE promedio DECIMAL(5,2);
+    DECLARE umbral_aprobacion DECIMAL(5,2) DEFAULT 60.00; -- Umbral de aprobación (60%)
 
-    -- Obtener la nota final del camper
-    SELECT nota_final INTO v_nota_final
-    FROM evaluacion
-    WHERE doc_camper = p_doc_camper AND id_modulo = p_id_modulo;
+    -- Llamar a la función calcularPromedioPonderado para obtener el promedio del camper en el módulo
+    SET promedio = calcularPromedioPonderado(doc_camper, id_modulo);
 
-    -- Verificar si la nota final es aprobatoria
-    IF v_nota_final >= 60 THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    END IF;
-END //
-DELIMITER ;
-
--- 3. Evaluar el nivel de riesgo de un camper según su rendimiento promedio.
-DELIMITER //
-CREATE FUNCTION evaluar_riesgo_camper(
-    p_doc_camper INT
-) RETURNS VARCHAR(50)
-BEGIN
-    DECLARE v_promedio DECIMAL(5,2);
-
-    -- Calcular el promedio de notas del camper
-    SELECT AVG(nota_final) INTO v_promedio
-    FROM evaluacion
-    WHERE doc_camper = p_doc_camper;
-
-    -- Evaluar el nivel de riesgo según el promedio
-    IF v_promedio >= 80 THEN
-        RETURN 'Bajo';
-    ELSEIF v_promedio >= 60 THEN
-        RETURN 'Medio';
-    ELSE
-        RETURN 'Alto';
-    END IF;
-END //
-DELIMITER ;
-
--- 4. Obtener el total de campers asignados a una ruta específica.
-DELIMITER //
-CREATE FUNCTION total_camper_ruta(
-    p_id_ruta INT
-) RETURNS INT
-BEGIN
-    DECLARE v_total INT;
-
-    -- Contar los campers asignados a la ruta
-    SELECT COUNT(*) INTO v_total
-    FROM camperRuta
-    WHERE id_ruta = p_id_ruta;
-
-    RETURN v_total;
-END //
-DELIMITER ;
-
--- 5. Consultar la cantidad de módulos que ha aprobado un camper.
-DELIMITER //
-CREATE FUNCTION cantidad_modulos_aprobados(
-    p_doc_camper INT
-) RETURNS INT
-BEGIN
-    DECLARE v_aprobados INT;
-
-    -- Contar los módulos aprobados
-    SELECT COUNT(*) INTO v_aprobados
-    FROM evaluacion
-    WHERE doc_camper = p_doc_camper AND nota_final >= 60;
-
-    RETURN v_aprobados;
-END //
-DELIMITER ;
-
--- 6. Validar si hay cupos disponibles en una determinada área.
-DELIMITER //
-CREATE FUNCTION validar_cupos_area(
-    p_id_area INT
-) RETURNS BOOLEAN
-BEGIN
-    DECLARE v_capacidad_max INT;
-    DECLARE v_num_camper INT;
-
-    -- Obtener la capacidad máxima del área
-    SELECT capacidad_maxima INTO v_capacidad_max
-    FROM areaEntrenamiento
-    WHERE id = p_id_area;
-
-    -- Contar el número de campers asignados al área
-    SELECT COUNT(*) INTO v_num_camper
-    FROM camperRuta
-    WHERE id_area = p_id_area;
-
-    -- Verificar si hay cupos disponibles
-    IF v_num_camper < v_capacidad_max THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    END IF;
-END //
-DELIMITER ;
-
--- 7. Calcular el porcentaje de ocupación de un área de entrenamiento.
-DELIMITER //
-CREATE FUNCTION porcentaje_ocupacion_area(
-    p_id_area INT
-) RETURNS DECIMAL(5,2)
-BEGIN
-    DECLARE v_capacidad_max INT;
-    DECLARE v_num_camper INT;
-    DECLARE v_porcentaje DECIMAL(5,2);
-
-    -- Obtener la capacidad máxima del área
-    SELECT capacidad_maxima INTO v_capacidad_max
-    FROM areaEntrenamiento
-    WHERE id = p_id_area;
-
-    -- Contar el número de campers asignados al área
-    SELECT COUNT(*) INTO v_num_camper
-    FROM camperRuta
-    WHERE id_area = p_id_area;
-
-    -- Calcular el porcentaje de ocupación
-    SET v_porcentaje = (v_num_camper / v_capacidad_max) * 100;
-
-    RETURN v_porcentaje;
-END //
-DELIMITER ;
-
--- 8. Determinar la nota más alta obtenida en un módulo.
-DELIMITER //
-CREATE FUNCTION nota_mas_alta_modulo(
-    p_id_modulo INT
-) RETURNS DECIMAL(5,2)
-BEGIN
-    DECLARE v_nota_max DECIMAL(5,2);
-
-    -- Obtener la nota máxima del módulo
-    SELECT MAX(nota_final) INTO v_nota_max
-    FROM evaluacion
-    WHERE id_modulo = p_id_modulo;
-
-    RETURN v_nota_max;
-END //
-DELIMITER ;
-
--- 9. Calcular la tasa de aprobación de una ruta.
-DELIMITER //
-CREATE FUNCTION tasa_aprobacion_ruta(
-    p_id_ruta INT
-) RETURNS DECIMAL(5,2)
-BEGIN
-    DECLARE v_total INT;
-    DECLARE v_aprobados INT;
-    DECLARE v_tasa DECIMAL(5,2);
-
-    -- Contar los total de campers asignados a la ruta
-    SELECT COUNT(*) INTO v_total
-    FROM camperRuta
-    WHERE id_ruta = p_id_ruta;
-
-    -- Contar los campers aprobados en esa ruta
-    SELECT COUNT(*) INTO v_aprobados
-    FROM camperRuta cr
-    JOIN evaluacion e ON cr.doc_camper = e.doc_camper
-    WHERE cr.id_ruta = p_id_ruta AND e.nota_final >= 60;
-
-    -- Calcular la tasa de aprobación
-    SET v_tasa = (v_aprobados / v_total) * 100;
-
-    RETURN v_tasa;
-END //
-DELIMITER ;
-
--- 10. Verificar si un trainer tiene horario disponible.
-DELIMITER //
-CREATE FUNCTION horario_disponible_trainer(
-    p_id_trainer INT, 
-    p_horario TIME
-) RETURNS BOOLEAN
-BEGIN
-    DECLARE v_disponibilidad INT;
-
-    -- Verificar si el trainer tiene el horario disponible
-    SELECT COUNT(*) INTO v_disponibilidad
-    FROM rutaTrainer
-    WHERE id_trainer = p_id_trainer AND horario = p_horario;
-
-    IF v_disponibilidad = 0 THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    END IF;
-END //
-DELIMITER ;
-
--- 11. Obtener el promedio de notas por ruta.
-DELIMITER //
-CREATE FUNCTION promedio_notas_ruta(
-    p_id_ruta INT
-) RETURNS DECIMAL(5,2)
-BEGIN
-    DECLARE v_promedio DECIMAL(5,2);
-
-    -- Calcular el promedio de notas en la ruta
-    SELECT AVG(nota_final) INTO v_promedio
-    FROM evaluacion e
-    JOIN camperRuta cr ON e.doc_camper = cr.doc_camper
-    WHERE cr.id_ruta = p_id_ruta;
-
-    RETURN v_promedio;
-END //
-DELIMITER ;
-
--- 12. Calcular cuántas rutas tiene asignadas un trainer.
-DELIMITER //
-CREATE FUNCTION cantidad_rutas_trainer(
-    p_id_trainer INT
-) RETURNS INT
-BEGIN
-    DECLARE v_total INT;
-
-    -- Contar las rutas asignadas al trainer
-    SELECT COUNT(*) INTO v_total
-    FROM rutaTrainer
-    WHERE id_trainer = p_id_trainer;
-
-    RETURN v_total;
-END //
-DELIMITER ;
-
--- 13. Verificar si un camper puede ser graduado.
-DELIMITER //
-CREATE FUNCTION puede_ser_graduado(
-    p_doc_camper INT
-) RETURNS BOOLEAN
-BEGIN
-    DECLARE v_total_modulos INT;
-    DECLARE v_modulos_aprobados INT;
-
-    -- Contar los módulos aprobados y el total de módulos
-    SELECT COUNT(*), SUM(CASE WHEN nota_final >= 60 THEN 1 ELSE 0 END)
-    INTO v_total_modulos, v_modulos_aprobados
-    FROM evaluacion
-    WHERE doc_camper = p_doc_camper;
-
-    -- Verificar si aprobó todos los módulos
-    IF v_modulos_aprobados = v_total_modulos THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    END IF;
-END //
-DELIMITER ;
-
--- 14. Obtener el estado actual de un camper en función de sus evaluaciones.
-DELIMITER //
-CREATE FUNCTION estado_camper(
-    p_doc_camper INT
-) RETURNS VARCHAR(50)
-BEGIN
-    DECLARE v_promedio DECIMAL(5,2);
-
-    -- Obtener el promedio de notas
-    SELECT AVG(nota_final) INTO v_promedio
-    FROM evaluacion
-    WHERE doc_camper = p_doc_camper;
-
-    -- Determinar el estado del camper
-    IF v_promedio >= 60 THEN
+    -- Comparar el promedio con el umbral de aprobación
+    IF promedio >= umbral_aprobacion THEN
         RETURN 'Aprobado';
     ELSE
         RETURN 'Reprobado';
     END IF;
-END //
+END$$
+
+DELIMITER ;
+
+-- 3. Evaluar el nivel de riesgo de un camper según su rendimiento promedio.
+DELIMITER $$
+
+CREATE FUNCTION evaluarRiesgoCamper(doc_camper VARCHAR(11), id_modulo INT)
+RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE promedio DECIMAL(5,2);
+    DECLARE nivel_riesgo VARCHAR(50);
+
+    -- Llamar a la función calcularPromedioPonderado para obtener el promedio del camper en el módulo
+    SET promedio = calcularPromedioPonderado(doc_camper, id_modulo);
+
+    -- Evaluar el nivel de riesgo según el promedio
+    IF promedio >= 80 THEN
+        SET nivel_riesgo = 'Bajo riesgo';
+    ELSEIF promedio >= 60 THEN
+        SET nivel_riesgo = 'Riesgo medio';
+    ELSE
+        SET nivel_riesgo = 'Alto riesgo';
+    END IF;
+
+    -- Devolver el nivel de riesgo
+    RETURN nivel_riesgo;
+END$$
+
+DELIMITER ;
+
+-- 4. Obtener el total de campers asignados a una ruta específica.
+DELIMITER $$
+
+CREATE FUNCTION obtenerTotalCampersPorRuta(id_ruta INT) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_camper INT;
+    
+    SELECT COUNT(doc_camper) 
+    INTO total_camper
+    FROM inscripciones
+    WHERE id_ruta = id_ruta
+    AND estado = 'Aprobada';
+    
+    RETURN total_camper;
+END$$
+
+DELIMITER ;
+
+-- 5. Consultar la cantidad de módulos que ha aprobado un camper.
+DELIMITER $$
+
+CREATE FUNCTION obtenerCantidadModulosAprobados(doc_camper VARCHAR(11)) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_modulos_aprobados INT;
+    
+    SELECT COUNT(*) 
+    INTO total_modulos_aprobados
+    FROM campersModulosAsignados
+    WHERE doc_camper = doc_camper
+    AND estado = 'Aprobado';
+    
+    RETURN total_modulos_aprobados;
+END$$
+
+DELIMITER ;
+
+-- 6. Validar si hay cupos disponibles en una determinada área.
+DELIMITER $$
+
+CREATE FUNCTION validarCuposDisponibles(id_area INT) 
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE cupos_disponibles BOOLEAN;
+    DECLARE capacidad_area INT;
+    DECLARE total_camper_asignados INT;
+    
+    -- Obtener la capacidad máxima del área
+    SELECT capacidad INTO capacidad_area
+    FROM areaSalon
+    WHERE id = id_area;
+    
+    -- Obtener el total de campers asignados a esa área
+    SELECT COUNT(*) INTO total_camper_asignados
+    FROM asignacionCamper
+    WHERE id_area = id_area AND fecha_fin IS NULL;
+    
+    -- Validar si hay cupos disponibles
+    IF total_camper_asignados < capacidad_area THEN
+        SET cupos_disponibles = TRUE;
+    ELSE
+        SET cupos_disponibles = FALSE;
+    END IF;
+    
+    RETURN cupos_disponibles;
+END$$
+
+DELIMITER ;
+
+-- 7. Calcular el porcentaje de ocupación de un área de entrenamiento.
+DELIMITER $$
+
+CREATE FUNCTION calcularPorcentajeOcupacion(id_area INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE porcentaje_ocupacion DECIMAL(5,2);
+    DECLARE capacidad_area INT;
+    DECLARE total_camper_asignados INT;
+    
+    -- Obtener la capacidad máxima del área
+    SELECT capacidad INTO capacidad_area
+    FROM areaSalon
+    WHERE id = id_area;
+    
+    -- Obtener el total de campers asignados a esa área
+    SELECT COUNT(*) INTO total_camper_asignados
+    FROM asignacionCamper
+    WHERE id_area = id_area AND fecha_fin IS NULL;
+    
+    -- Calcular el porcentaje de ocupación
+    IF capacidad_area > 0 THEN
+        SET porcentaje_ocupacion = (total_camper_asignados / capacidad_area) * 100;
+    ELSE
+        SET porcentaje_ocupacion = 0; -- En caso de que la capacidad sea 0 o no exista el área
+    END IF;
+    
+    RETURN porcentaje_ocupacion;
+END$$
+
+DELIMITER ;
+
+-- 8. Determinar la nota más alta obtenida en un módulo.
+DELIMITER $$
+
+CREATE FUNCTION obtenerNotaMasAlta(id_modulo INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE nota_maxima DECIMAL(5,2);
+    
+    -- Obtener la nota más alta en el módulo especificado
+    SELECT MAX(nota) INTO nota_maxima
+    FROM skillsNotas
+    WHERE id_modulo = id_modulo;
+    
+    -- Si no hay notas, retornamos 0
+    IF nota_maxima IS NULL THEN
+        SET nota_maxima = 0;
+    END IF;
+    
+    RETURN nota_maxima;
+END$$
+
+DELIMITER ;
+
+-- 9. Calcular la tasa de aprobación de una ruta.
+DELIMITER $$
+
+CREATE FUNCTION calcularTasaAprobacion(id_ruta INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_aprobados INT;
+    DECLARE total_inscritos INT;
+    DECLARE tasa_aprobacion DECIMAL(5,2);
+
+    -- Obtener el total de campers aprobados en la ruta
+    SELECT COUNT(*) INTO total_aprobados
+    FROM inscripciones i
+    JOIN campersModulosAsignados cma ON i.doc_camper = cma.doc_camper
+    WHERE i.id_ruta = id_ruta AND cma.estado = 'Aprobado';
+
+    -- Obtener el total de campers inscritos en la ruta
+    SELECT COUNT(*) INTO total_inscritos
+    FROM inscripciones
+    WHERE id_ruta = id_ruta AND estado = 'Completada';
+
+    -- Calcular la tasa de aprobación, si no hay inscritos, retornamos 0
+    IF total_inscritos > 0 THEN
+        SET tasa_aprobacion = (total_aprobados / total_inscritos) * 100;
+    ELSE
+        SET tasa_aprobacion = 0;
+    END IF;
+
+    RETURN tasa_aprobacion;
+END$$
+
+DELIMITER ;
+
+-- 10. Verificar si un trainer tiene horario disponible.
+DELIMITER $$
+
+CREATE FUNCTION verificarHorarioDisponible(id_trainer INT, id_area INT, dia_semana ENUM('Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'))
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE horario_disponible BOOLEAN;
+
+    -- Verificamos si el trainer tiene un horario asignado para el día y área especificados
+    SELECT COUNT(*)
+    INTO horario_disponible
+    FROM horarioTrainer ht
+    WHERE ht.id_trainer = id_trainer
+      AND ht.id_area = id_area
+      AND ht.dia_semana = dia_semana;
+
+    -- Si hay un horario asignado, retornamos FALSE (no disponible), de lo contrario, TRUE (disponible)
+    IF horario_disponible > 0 THEN
+        RETURN FALSE;  -- No disponible
+    ELSE
+        RETURN TRUE;   -- Disponible
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- 11. Obtener el promedio de notas por ruta.
+DELIMITER $$
+
+CREATE FUNCTION promedioNotasPorRuta(id_ruta INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE promedio DECIMAL(5,2);
+
+    -- Calculamos el promedio de las notas finales de todos los campers inscritos en la ruta
+    SELECT AVG(nf.nota_final)
+    INTO promedio
+    FROM notaFinal nf
+    JOIN campersModulosAsignados cma ON cma.id_modulo = nf.id_modulo
+    JOIN inscripciones i ON i.doc_camper = cma.doc_camper
+    WHERE i.id_ruta = id_ruta AND nf.nota_final > 0;
+
+    -- Si no hay notas registradas para esa ruta, devolvemos 0
+    IF promedio IS NULL THEN
+        SET promedio = 0;
+    END IF;
+
+    RETURN promedio;
+END$$
+
+DELIMITER ;
+
+-- 12. Calcular cuántas rutas tiene asignadas un trainer.
+DELIMITER $$
+
+CREATE FUNCTION contarRutasPorTrainer(id_trainer INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE cantidad INT;
+
+    -- Contamos cuántas rutas están asignadas al trainer
+    SELECT COUNT(*) INTO cantidad
+    FROM rutaTrainer
+    WHERE id_trainer = id_trainer;
+
+    RETURN cantidad;
+END$$
+
+DELIMITER ;
+
+-- 13. Verificar si un camper puede ser graduado.
+DELIMITER $$
+
+CREATE FUNCTION verificarGraduacion(doc_camper VARCHAR(11))
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE aprobado INT;
+    DECLARE total_modulos INT;
+
+    -- Contamos la cantidad total de módulos asignados al camper
+    SELECT COUNT(*) INTO total_modulos
+    FROM campersModulosAsignados
+    WHERE doc_camper = doc_camper;
+
+    -- Contamos la cantidad de módulos que ha aprobado el camper
+    SELECT COUNT(*) INTO aprobado
+    FROM campersModulosAsignados
+    WHERE doc_camper = doc_camper AND estado = 'Aprobado';
+
+    -- Si el número de módulos aprobados es igual al total de módulos asignados, el camper puede ser graduado
+    IF aprobado = total_modulos THEN
+        RETURN TRUE;  -- El camper puede ser graduado
+    ELSE
+        RETURN FALSE; -- El camper no puede ser graduado
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- 14. Obtener el estado actual de un camper en función de sus evaluaciones.
+DELIMITER $$
+
+CREATE FUNCTION obtenerEstadoCamper(doc_camper VARCHAR(11))
+RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE promedio DECIMAL(5,2);
+    DECLARE total_modulos INT;
+    DECLARE modulos_completados INT;
+    DECLARE estado_final VARCHAR(50);
+
+    -- Calculamos el promedio ponderado de las evaluaciones del camper
+    SELECT AVG(nota) INTO promedio
+    FROM skillsNotas
+    WHERE doc_camper = doc_camper;
+
+    -- Contamos cuántos módulos tiene asignados el camper
+    SELECT COUNT(*) INTO total_modulos
+    FROM campersModulosAsignados
+    WHERE doc_camper = doc_camper;
+
+    -- Contamos cuántos módulos ha completado (estado Aprobado o Reprobado)
+    SELECT COUNT(*) INTO modulos_completados
+    FROM campersModulosAsignados
+    WHERE doc_camper = doc_camper AND estado IN ('Aprobado', 'Reprobado');
+
+    -- Determinamos el estado final del camper
+    IF modulos_completados = total_modulos THEN
+        IF promedio >= 6.00 THEN  -- Consideramos 6.00 como el mínimo para aprobar
+            SET estado_final = 'Aprobado';
+        ELSE
+            SET estado_final = 'Reprobado';
+        END IF;
+    ELSE
+        SET estado_final = 'En curso';  -- El camper todavía tiene módulos por completar
+    END IF;
+
+    RETURN estado_final;
+END$$
+
 DELIMITER ;
 
 -- 15. Calcular la carga horaria semanal de un trainer.
-DELIMITER //
-CREATE FUNCTION carga_horaria_trainer(
-    p_id_trainer INT
-) RETURNS INT
+DELIMITER $$
+
+CREATE FUNCTION calcularCargaHorariaSemanal(id_trainer INT)
+RETURNS INT
+DETERMINISTIC
 BEGIN
-    DECLARE v_total_horas INT;
+    DECLARE carga_horaria INT DEFAULT 0;
+    DECLARE horas INT;
 
-    -- Calcular el total de horas asignadas al trainer
-    SELECT SUM(duracion) INTO v_total_horas
-    FROM rutaTrainer
-    WHERE id_trainer = p_id_trainer;
+    -- Recorremos los horarios asignados al trainer para calcular su carga horaria semanal
+    DECLARE horario_cursor CURSOR FOR
+        SELECT h.hora_inicio, h.hora_fin
+        FROM horarioTrainer ht
+        JOIN horarios h ON ht.id_horario = h.id
+        WHERE ht.id_trainer = id_trainer;
 
-    RETURN v_total_horas;
-END //
+    -- Variables para el cursor
+    OPEN horario_cursor;
+    FETCH horario_cursor INTO horas_inicio, horas_fin;
+
+    -- Mientras haya horarios asignados, calculamos la carga horaria
+    WHILE (FOUND) DO
+        SET carga_horaria = carga_horaria + TIMESTAMPDIFF(HOUR, horas_inicio, horas_fin);
+        FETCH horario_cursor INTO horas_inicio, horas_fin;
+    END WHILE;
+
+    -- Cerramos el cursor
+    CLOSE horario_cursor;
+
+    RETURN carga_horaria;
+END$$
+
 DELIMITER ;
 
 -- 16. Determinar si una ruta tiene módulos pendientes por evaluación.
-DELIMITER //
-CREATE FUNCTION tiene_modulos_pendientes(
-    p_id_ruta INT
-) RETURNS BOOLEAN
+DELIMITER $$
+
+CREATE FUNCTION tieneModulosPendientes(id_ruta INT)
+RETURNS BOOLEAN
+DETERMINISTIC
 BEGIN
-    DECLARE v_pendientes INT;
+    DECLARE resultado BOOLEAN DEFAULT FALSE;
 
-    -- Verificar si hay módulos pendientes por evaluación
-    SELECT COUNT(*) INTO v_pendientes
-    FROM modulo
-    WHERE id_ruta = p_id_ruta AND id_modulo NOT IN (
-        SELECT id_modulo FROM evaluacion
-        WHERE nota_final IS NOT NULL
-    );
-
-    IF v_pendientes > 0 THEN
-        RETURN TRUE;
+    -- Verificar si hay algún módulo pendiente de evaluación en la ruta especificada
+    IF EXISTS (
+        SELECT 1
+        FROM rutaModulo rm
+        JOIN campersModulosAsignados cma ON rm.id_modulo = cma.id_modulo
+        WHERE rm.id_ruta = id_ruta
+        AND cma.estado = 'Pendiente'
+    ) THEN
+        SET resultado = TRUE;
     ELSE
-        RETURN FALSE;
+        SET resultado = FALSE;
     END IF;
-END //
+
+    RETURN resultado;
+END$$
+
 DELIMITER ;
 
 -- 17. Calcular el promedio general del programa.
-DELIMITER //
-CREATE FUNCTION promedio_general_programa() RETURNS DECIMAL(5,2)
+DELIMITER $$
+
+CREATE FUNCTION promedioGeneralPrograma()
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
 BEGIN
-    DECLARE v_promedio DECIMAL(5,2);
+    DECLARE promedio DECIMAL(5,2);
 
-    -- Calcular el promedio de todos los campers en todas las rutas
-    SELECT AVG(nota_final) INTO v_promedio
-    FROM evaluacion;
+    -- Calcular el promedio de todas las notas finales
+    SELECT AVG(nota_final)
+    INTO promedio
+    FROM notaFinal
+    WHERE aprobado = TRUE;
 
-    RETURN v_promedio;
-END //
+    -- Retornar el promedio calculado
+    RETURN promedio;
+END$$
+
 DELIMITER ;
 
+
 -- 18. Verificar si un horario choca con otros entrenadores en el área.
-DELIMITER //
-CREATE FUNCTION horario_choca(
+DELIMITER $$
+
+CREATE FUNCTION verificarHorarioChoca(
+    p_id_trainer INT, 
     p_id_area INT, 
-    p_horario TIME
-) RETURNS BOOLEAN
+    p_id_horario INT
+)
+RETURNS BOOLEAN
+DETERMINISTIC
 BEGIN
-    DECLARE v_choca INT;
+    DECLARE horario_choca BOOLEAN DEFAULT FALSE;
 
-    -- Verificar si el horario ya está ocupado
-    SELECT COUNT(*) INTO v_choca
-    FROM rutaTrainer
-    WHERE id_area = p_id_area AND horario = p_horario;
+    -- Verificamos si el horario del nuevo entrenador choca con otros entrenadores en el área especificada
+    SELECT COUNT(*) > 0
+    INTO horario_choca
+    FROM horarioTrainer ht1
+    JOIN horarios h1 ON ht1.id_horario = h1.id
+    WHERE ht1.id_area = p_id_area
+    AND ht1.id_trainer != p_id_trainer
+    AND (
+        (h1.hora_inicio < (SELECT hora_fin FROM horarios WHERE id = p_id_horario) 
+         AND h1.hora_fin > (SELECT hora_inicio FROM horarios WHERE id = p_id_horario))
+    );
 
-    IF v_choca > 0 THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    END IF;
-END //
+    -- Retornar TRUE si el horario choca, FALSE si no
+    RETURN horario_choca;
+END$$
+
 DELIMITER ;
 
 -- 19. Calcular cuántos campers están en riesgo en una ruta específica.
-DELIMITER //
-CREATE FUNCTION campers_en_riesgo(
-    p_id_ruta INT
-) RETURNS INT
+DELIMITER $$
+
+CREATE FUNCTION calcularCampersEnRiesgoRuta(p_id_ruta INT)
+RETURNS INT
+DETERMINISTIC
 BEGIN
-    DECLARE v_riesgo INT;
+    DECLARE total_en_riesgo INT;
 
-    -- Contar los campers en riesgo
-    SELECT COUNT(*) INTO v_riesgo
-    FROM camperRuta cr
-    JOIN evaluacion e ON cr.doc_camper = e.doc_camper
-    WHERE cr.id_ruta = p_id_ruta AND e.nota_final < 60;
+    -- Contamos cuántos campers asignados a la ruta tienen un nivel de riesgo
+    SELECT COUNT(*)
+    INTO total_en_riesgo
+    FROM camper c
+    JOIN inscripciones i ON c.documento = i.doc_camper
+    JOIN nivelRiesgo nr ON c.id_nivel_riesgo = nr.id
+    WHERE i.id_ruta = p_id_ruta
+    AND nr.nivel = 'Alto';  -- Suponemos que 'Alto' es el nivel de riesgo alto
 
-    RETURN v_riesgo;
-END //
+    RETURN total_en_riesgo;
+END$$
+
 DELIMITER ;
 
 -- 20. Consultar el número de módulos evaluados por un camper.
-DELIMITER //
-CREATE FUNCTION modulos_evaluados_camper(
-    p_doc_camper INT
-) RETURNS INT
-BEGIN
-    DECLARE v_modulos_evaluados INT;
+DELIMITER $$
 
-    -- Contar los módulos evaluados por el camper
-    SELECT COUNT(*) INTO v_modulos_evaluados
-    FROM evaluacion
+CREATE FUNCTION consultarModulosEvaluadosCamper(p_doc_camper VARCHAR(11))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_modulos_evaluados INT;
+
+    -- Contamos cuántos módulos han sido evaluados para el camper
+    SELECT COUNT(DISTINCT id_modulo)
+    INTO total_modulos_evaluados
+    FROM skillsNotas
     WHERE doc_camper = p_doc_camper;
 
-    RETURN v_modulos_evaluados;
-END //
+    RETURN total_modulos_evaluados;
+END$$
+
 DELIMITER ;
