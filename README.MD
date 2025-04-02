@@ -281,9 +281,6 @@ ORDER BY promedio_camper ASC;
 ## Uso
 Para ejecutar estas consultas, asegúrese de estar conectado a la base de datos de **Campuslands** y contar con las tablas correspondientes creadas y pobladas con datos válidos.
 
-## Contacto
-Si tienes dudas o sugerencias sobre las consultas, no dudes en contribuir o ponerte en contacto.
-
 # 📌 Base de Datos - Campuslands
 
 Este documento describe los **triggers**, **procedimientos almacenados** y **funciones** implementados en la base de datos **Campuslands**. Estos elementos aseguran la integridad de los datos y automatizan procesos dentro del sistema.
