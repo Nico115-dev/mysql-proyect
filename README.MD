@@ -283,7 +283,7 @@ Para ejecutar estas consultas, asegúrese de estar conectado a la base de datos 
 
 # 📌 Base de Datos - Campuslands
 
-Este documento describe los **triggers**, **procedimientos almacenados** y **funciones** implementados en la base de datos **Campuslands**. Estos elementos aseguran la integridad de los datos y automatizan procesos dentro del sistema.
+Este documento describe levemente los **triggers**, **procedimientos almacenados** y **funciones** implementados en la base de datos **Campuslands**. Estos elementos aseguran la integridad de los datos y automatizan procesos dentro del sistema. Unicamente hay un ejemplo por cada uno respectivamente.
 
 ---
 
